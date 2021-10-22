@@ -26,9 +26,15 @@ Durudex Notification Service
 ## ⚙️ Build & Run
 1) Create an `.env` file in the root directory and add the following values ​​from `.env.example`:
 ```sh
-
+# SMTP user password.
+SMTP_PASSWORD=
 ```
-2) Generate certificates, information can be found at [cert/README.md](cert/README.md)
+2) Add local domains:
+```
+notifservice.durudex.local
+email.durudex.local
+```
+3) Generate certificates, information can be found at [cert/README.md](cert/README.md)
 
 Use `make run` to run and `make build` to build project.
 
@@ -45,3 +51,4 @@ Copyright © 2021 [Durudex](https://github.com/Durudex). Released under the [GNU
 + [protobuf](https://github.com/protocolbuffers/protobuf/blob/master/LICENSE)
 + [zerolog](https://github.com/rs/zerolog/blob/master/LICENSE)
 + [viper](https://github.com/spf13/viper/blob/master/LICENSE)
++ [go-simple-mail](https://github.com/xhit/go-simple-mail/blob/master/LICENSE)

@@ -26,6 +26,7 @@ import (
 	"github.com/Durudex/durudex-notif-service/internal/delivery/grpc"
 	"github.com/Durudex/durudex-notif-service/internal/server"
 	"github.com/Durudex/durudex-notif-service/internal/service"
+	"github.com/Durudex/durudex-notif-service/pkg/email"
 	"github.com/rs/zerolog/log"
 )
 
@@ -34,8 +35,23 @@ func Run(configPath string) {
 	// Initialize config.
 	cfg := config.Init(configPath)
 
+	// Managers.
+	emailManager, err := email.NewSMTP(&email.SMTPConfig{
+		Host:           cfg.SMTP.Host,
+		Port:           cfg.SMTP.Port,
+		Username:       cfg.SMTP.Username,
+		Password:       cfg.SMTP.Password,
+		ConnectTimeout: cfg.SMTP.ConnectTimeout,
+		SendTimeout:    cfg.SMTP.SendTimeout,
+		Helo:           cfg.SMTP.Helo,
+		KeepAlive:      cfg.SMTP.KeepAlive,
+	})
+	if err != nil {
+		log.Error().Msgf("error creating a new smtp: %s", err.Error())
+	}
+
 	// Service, Handler.
-	service := service.NewService()
+	service := service.NewService(emailManager)
 	grpcHandler := grpc.NewGRPCHandler(service)
 
 	// Create and run server.

@@ -15,19 +15,24 @@
 	along with Durudex. If not, see <https://www.gnu.org/licenses/>.
 */
 
-package service
+package email
 
-import "github.com/Durudex/durudex-notif-service/pkg/email"
+import "regexp"
 
-type Email interface{}
+const (
+	minEmailLen = 3
+	maxEmailLen = 255
+)
 
-type Service struct {
-	Email
-}
+// Avaivable characters in email.
+var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-// Creating a new service.
-func NewService(email email.Email) *Service {
-	return &Service{
-		Email: NewEmailService(email),
+// Check email lenght and characters.
+func IsEmailValid(email string) bool {
+	// Check email lenght.
+	if len(email) < minEmailLen || len(email) > maxEmailLen {
+		return false
 	}
+
+	return emailRegex.MatchString(email)
 }

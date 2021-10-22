@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/rs/zerolog v1.25.0
 	github.com/spf13/viper v1.9.0
+	github.com/xhit/go-simple-mail/v2 v2.10.0
 	google.golang.org/grpc v1.41.0
 	google.golang.org/protobuf v1.27.1
 )

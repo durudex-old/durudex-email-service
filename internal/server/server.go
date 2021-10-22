@@ -48,7 +48,7 @@ func NewServer(cfg *config.Config, grpcHandler *handler.Handler) *Server {
 	serverOptions := []grpc.ServerOption{}
 
 	// If TLS is true.
-	if cfg.Server.TLS {
+	if cfg.GRPC.TLS {
 		tlsCredentials, err := LoadTLSCredentials()
 		if err != nil {
 			log.Fatal().Msgf("error load tls credentials: %s", err.Error())
@@ -62,8 +62,8 @@ func NewServer(cfg *config.Config, grpcHandler *handler.Handler) *Server {
 		)
 	}
 
-	// Server address.
-	address := cfg.Server.Host + ":" + cfg.Server.Port
+	// GRPC server address.
+	address := cfg.GRPC.Host + ":" + cfg.GRPC.Port
 
 	return &Server{
 		tcpServer:   NewTCPServer(address),

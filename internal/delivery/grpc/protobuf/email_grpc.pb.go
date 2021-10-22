@@ -7,7 +7,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
-	UserVerification(ctx context.Context, in *UserVerificationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UserVerification(ctx context.Context, in *UserVerificationRequest, opts ...grpc.CallOption) (*Status, error)
 }
 
 type emailServiceClient struct {
@@ -30,8 +29,8 @@ func NewEmailServiceClient(cc grpc.ClientConnInterface) EmailServiceClient {
 	return &emailServiceClient{cc}
 }
 
-func (c *emailServiceClient) UserVerification(ctx context.Context, in *UserVerificationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *emailServiceClient) UserVerification(ctx context.Context, in *UserVerificationRequest, opts ...grpc.CallOption) (*Status, error) {
+	out := new(Status)
 	err := c.cc.Invoke(ctx, "/email.EmailService/UserVerification", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -43,7 +42,7 @@ func (c *emailServiceClient) UserVerification(ctx context.Context, in *UserVerif
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility
 type EmailServiceServer interface {
-	UserVerification(context.Context, *UserVerificationRequest) (*emptypb.Empty, error)
+	UserVerification(context.Context, *UserVerificationRequest) (*Status, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -51,7 +50,7 @@ type EmailServiceServer interface {
 type UnimplementedEmailServiceServer struct {
 }
 
-func (UnimplementedEmailServiceServer) UserVerification(context.Context, *UserVerificationRequest) (*emptypb.Empty, error) {
+func (UnimplementedEmailServiceServer) UserVerification(context.Context, *UserVerificationRequest) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserVerification not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}

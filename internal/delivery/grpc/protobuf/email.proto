@@ -19,14 +19,16 @@ package email;
 
 option go_package = "github.com/Durudex/durudex-notif-service;protobuf";
 
-import "google/protobuf/empty.proto";
-
 service EmailService {
-  rpc UserVerification(UserVerificationRequest) returns (google.protobuf.Empty);
+  rpc UserVerification(UserVerificationRequest) returns (Status);
 }
 
 message UserVerificationRequest {
   string email = 1;
   string name = 2;
   int32 code = 3;
+}
+
+message Status {
+  bool status = 1;
 }

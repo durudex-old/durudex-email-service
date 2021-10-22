@@ -18,7 +18,9 @@
 package config
 
 import (
+	"os"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -26,17 +28,27 @@ import (
 
 type (
 	Config struct {
-		Server ServerConfig
+		GRPC GRPCConfig
+		SMTP SMTPConfig
 	}
 
-	// Server config variables.
-	ServerConfig struct {
-		// Server host.
+	// CRPC server config variables.
+	GRPCConfig struct {
 		Host string `mapstructure:"host"`
-		// Server port.
 		Port string `mapstructure:"port"`
-		// Transport Layer Security.
-		TLS bool `mapstructure:"tls"`
+		TLS  bool   `mapstructure:"tls"`
+	}
+
+	// SMTP server config variables.
+	SMTPConfig struct {
+		Host           string        `mapstructure:"host"`
+		Port           int           `mapstructure:"port"`
+		ConnectTimeout time.Duration `mapstructure:"connectTimeout"`
+		SendTimeout    time.Duration `mapstructure:"sendTimeout"`
+		Helo           string        `mapstructure:"helo"`
+		KeepAlive      bool          `mapstructure:"keepAlive"`
+		Username       string        `mapstructure:"username"`
+		Password       string
 	}
 )
 
@@ -50,6 +62,9 @@ func Init(configPath string) *Config {
 	var cfg Config
 	// Unmarshal config keys.
 	unmarshal(&cfg)
+
+	// Set env configurations.
+	setFromEnv(&cfg)
 
 	return &cfg
 }
@@ -74,8 +89,17 @@ func parseConfigFile(configPath string) {
 func unmarshal(cfg *Config) {
 	log.Debug().Msg("Unmarshal config keys...")
 
-	// Unmarshal server keys.
-	if err := viper.UnmarshalKey("server", &cfg.Server); err != nil {
-		log.Error().Msgf("error unmarshal server keys: %s", err.Error())
+	// Unmarshal grpc keys.
+	if err := viper.UnmarshalKey("grpc", &cfg.GRPC); err != nil {
+		log.Error().Msgf("error unmarshal grpc keys: %s", err.Error())
 	}
+	// Unmarshal smpt keys.
+	if err := viper.UnmarshalKey("smtp", &cfg.SMTP); err != nil {
+		log.Error().Msgf("error unmarshal smtp keys: %s", err.Error())
+	}
+}
+
+// Seting environment variables from .env file.
+func setFromEnv(cfg *Config) {
+	cfg.SMTP.Password = os.Getenv("SMTP_PASSWORD")
 }

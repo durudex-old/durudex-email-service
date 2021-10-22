@@ -19,15 +19,13 @@ package service
 
 import "github.com/Durudex/durudex-notif-service/pkg/email"
 
-type Email interface{}
-
-type Service struct {
-	Email
+type EmailService struct {
+	email email.Email
 }
 
-// Creating a new service.
-func NewService(email email.Email) *Service {
-	return &Service{
-		Email: NewEmailService(email),
+// Creating a new email service.
+func NewEmailService(email email.Email) *EmailService {
+	return &EmailService{
+		email: email,
 	}
 }

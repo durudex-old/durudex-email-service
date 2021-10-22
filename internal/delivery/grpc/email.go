@@ -22,7 +22,6 @@ import (
 
 	pb "github.com/Durudex/durudex-notif-service/internal/delivery/grpc/protobuf"
 	"github.com/Durudex/durudex-notif-service/internal/service"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type EmailHandler struct {
@@ -38,6 +37,6 @@ func NewEmailHandler(service *service.Service) *EmailHandler {
 }
 
 // Sending a user verification code to the email.
-func (h *EmailHandler) UserVerification(context.Context, *pb.UserVerificationRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
+func (h *EmailHandler) UserVerification(context.Context, *pb.UserVerificationRequest) (*pb.Status, error) {
+	return &pb.Status{}, nil
 }
