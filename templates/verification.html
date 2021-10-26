@@ -1,0 +1,83 @@
+<!--
+  Copyright © 2021 Durudex
+
+  This file is part of Durudex: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  Durudex is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with Durudex. If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;500;600&display=swap');
+
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: 'Montserrat';
+    }
+
+    .container {
+      background: linear-gradient(169.94deg, #BA03FB 0%, #2200F1 98.14%);
+      padding: 60px 50px 60px 50px;
+      align-content: center;
+    }
+
+    .content {
+      margin: auto;
+      border-radius: 30px;
+      width: 480px;
+      background-color: #FFF;
+      text-align: center;
+      padding-top: 30px
+    }
+
+    .content h1 {
+      padding-top: 45px;
+      color: #0263F4;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .verification {
+      padding-top: 45px;
+    }
+
+    .verification span {
+      font-size: 25px;
+      font-weight: normal;
+    }
+
+    .verification h3 {
+      padding-top: 20px;
+      padding-bottom: 60px;
+      font-weight: 800;
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <img src="../assets/durudex.png" alt="durudex">
+        <h1>Hi, {.Name}!</h1>
+        <div class="verification">
+          <span>Here’s your verification code:</span>
+          <h3>{.Code}</h3>
+        </div>
+    </div>
+  </div>
+</body>
+</html>
