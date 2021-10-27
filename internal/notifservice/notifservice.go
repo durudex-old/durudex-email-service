@@ -51,7 +51,7 @@ func Run(configPath string) {
 	}
 
 	// Service, Handler.
-	service := service.NewService(emailManager)
+	service := service.NewService(emailManager, cfg.Email)
 	grpcHandler := grpc.NewGRPCHandler(service)
 
 	// Create and run server.

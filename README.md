@@ -26,7 +26,9 @@ Durudex Notification Service
 ## ⚙️ Build & Run
 1) Create an `.env` file in the root directory and add the following values ​​from `.env.example`:
 ```sh
-# SMTP user password.
+# Email username.
+SMTP_USERNAME=
+# Email password.
 SMTP_PASSWORD=
 ```
 2) Add local domains:

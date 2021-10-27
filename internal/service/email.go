@@ -17,15 +17,44 @@
 
 package service
 
-import "github.com/Durudex/durudex-notif-service/pkg/email"
+import (
+	"github.com/Durudex/durudex-notif-service/internal/config"
+	"github.com/Durudex/durudex-notif-service/pkg/email"
+)
 
 type EmailService struct {
-	email email.Email
+	email  email.Email
+	config config.EmailConfig
 }
 
 // Creating a new email service.
-func NewEmailService(email email.Email) *EmailService {
+func NewEmailService(email email.Email, emailConfig config.EmailConfig) *EmailService {
 	return &EmailService{
-		email: email,
+		email:  email,
+		config: emailConfig,
 	}
+}
+
+type verificationEmailInput struct {
+	Name string
+	Code int32
+}
+
+// Send to user email verification code.
+func (s *EmailService) UserVerification(to, name string, code int32) (bool, error) {
+	msg := email.SendEmailInput{
+		To:      to,
+		Subject: "Verification Code",
+	}
+
+	// Generate email html template.
+	templateInput := verificationEmailInput{Name: name, Code: code}
+	msg.GenerateBodyFromHTML(s.config.Template.Verification, templateInput)
+
+	// Send email message.
+	if err := s.email.Send(msg); err != nil {
+		return false, err
+	}
+
+	return true, nil
 }

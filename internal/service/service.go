@@ -17,17 +17,22 @@
 
 package service
 
-import "github.com/Durudex/durudex-notif-service/pkg/email"
+import (
+	"github.com/Durudex/durudex-notif-service/internal/config"
+	"github.com/Durudex/durudex-notif-service/pkg/email"
+)
 
-type Email interface{}
+type Email interface {
+	UserVerification(to, name string, code int32) (bool, error)
+}
 
 type Service struct {
 	Email
 }
 
 // Creating a new service.
-func NewService(email email.Email) *Service {
+func NewService(email email.Email, emailConfig config.EmailConfig) *Service {
 	return &Service{
-		Email: NewEmailService(email),
+		Email: NewEmailService(email, emailConfig),
 	}
 }

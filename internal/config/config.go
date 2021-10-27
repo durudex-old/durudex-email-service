@@ -28,8 +28,9 @@ import (
 
 type (
 	Config struct {
-		GRPC GRPCConfig
-		SMTP SMTPConfig
+		GRPC  GRPCConfig
+		SMTP  SMTPConfig
+		Email EmailConfig
 	}
 
 	// CRPC server config variables.
@@ -47,8 +48,18 @@ type (
 		SendTimeout    time.Duration `mapstructure:"sendTimeout"`
 		Helo           string        `mapstructure:"helo"`
 		KeepAlive      bool          `mapstructure:"keepAlive"`
-		Username       string        `mapstructure:"username"`
+		Username       string
 		Password       string
+	}
+
+	// Email config variables.
+	EmailConfig struct {
+		Template EmailTemplate
+	}
+
+	// Email templates config variables.
+	EmailTemplate struct {
+		Verification string `mapstructure:"verification"`
 	}
 )
 
@@ -97,9 +108,14 @@ func unmarshal(cfg *Config) {
 	if err := viper.UnmarshalKey("smtp", &cfg.SMTP); err != nil {
 		log.Error().Msgf("error unmarshal smtp keys: %s", err.Error())
 	}
+	// Unmarshal email keys.
+	if err := viper.UnmarshalKey("email.template", &cfg.Email.Template); err != nil {
+		log.Error().Msgf("error unmarshal email template keys: %s", err.Error())
+	}
 }
 
 // Seting environment variables from .env file.
 func setFromEnv(cfg *Config) {
+	cfg.SMTP.Username = os.Getenv("SMTP_USERNAME")
 	cfg.SMTP.Password = os.Getenv("SMTP_PASSWORD")
 }

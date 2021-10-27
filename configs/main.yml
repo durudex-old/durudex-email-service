@@ -21,8 +21,11 @@ grpc:
 smtp:
   host: email.durudex.local
   port: 8002
-  username: durudex@durudex.local
   connectTimeout: 10s
   sendTimeout: 10s
   helo: durudex
   keepAlive: false
+
+email:
+  template:
+    verification: ./templates/verification.hmtl
