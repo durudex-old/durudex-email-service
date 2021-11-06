@@ -15,12 +15,12 @@
 
 grpc:
   host: notifservice.durudex.local
-  port: 8001
+  port: 8002
   tls: true
 
 smtp:
   host: email.durudex.local
-  port: 8002
+  port: 8003
   connectTimeout: 10s
   sendTimeout: 10s
   helo: durudex

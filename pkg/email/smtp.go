@@ -50,7 +50,7 @@ func NewSMTP(cfg *SMTPConfig) (*SMTP, error) {
 		SendTimeout:    cfg.SendTimeout,
 		Helo:           cfg.Helo,
 		KeepAlive:      cfg.KeepAlive,
-		Authentication: mail.AuthPlain,
+		Authentication: mail.AuthNone,
 		Encryption:     mail.EncryptionNone,
 	}
 
