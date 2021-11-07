@@ -15,19 +15,9 @@
 
 syntax = "proto3";
 
-package email;
+package types.status;
 
-option go_package = "github.com/Durudex/durudex-notif-service;protobuf";
-
-service EmailService {
-  rpc UserVerification(UserVerificationRequest) returns (Status);
-}
-
-message UserVerificationRequest {
-  string email = 1;
-  string name = 2;
-  int32 code = 3;
-}
+option go_package = "github.com/Durudex/durudex-notif-service/internal/delivery/grpc/protobuf/types;types";
 
 message Status {
   bool status = 1;

@@ -18,6 +18,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/Durudex/durudex-notif-service/internal/config"
 	"github.com/Durudex/durudex-notif-service/pkg/email"
 )
@@ -41,7 +43,7 @@ type verificationEmailInput struct {
 }
 
 // Send to user email verification code.
-func (s *EmailService) UserVerification(to, name string, code int32) (bool, error) {
+func (s *EmailService) UserVerifyCode(to, name string, code int32) (bool, error) {
 	msg := email.SendEmailInput{
 		To:      to,
 		Subject: "Verification Code",
@@ -53,6 +55,7 @@ func (s *EmailService) UserVerification(to, name string, code int32) (bool, erro
 
 	// Send email message.
 	if err := s.email.Send(msg); err != nil {
+		fmt.Println(err.Error())
 		return false, err
 	}
 

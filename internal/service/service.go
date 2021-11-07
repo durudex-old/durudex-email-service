@@ -23,7 +23,7 @@ import (
 )
 
 type Email interface {
-	UserVerification(to, name string, code int32) (bool, error)
+	UserVerifyCode(to, name string, code int32) (bool, error)
 }
 
 type Service struct {

@@ -39,7 +39,7 @@ func NewGRPCHandler(service *service.Service) *Handler {
 
 // Regisctration services handlers.
 func (h *Handler) RegisterHandlers(srv *grpc.Server) {
-	pb.RegisterEmailServiceServer(srv, NewEmailHandler(h.service))
+	pb.RegisterNotifServiceServer(srv, NewEmailHandler(h.service))
 }
 
 // Unary grpc interceptor.
