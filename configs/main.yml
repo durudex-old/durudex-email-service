@@ -24,7 +24,7 @@ smtp:
   connectTimeout: 10s
   sendTimeout: 10s
   helo: durudex
-  keepAlive: false
+  keepAlive: true
 
 email:
   template:

@@ -18,22 +18,20 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/Durudex/durudex-notif-service/internal/config"
 	"github.com/Durudex/durudex-notif-service/pkg/email"
 )
 
 type EmailService struct {
-	email  email.Email
-	config config.EmailConfig
+	email email.Email
+	cfg   config.EmailConfig
 }
 
 // Creating a new email service.
 func NewEmailService(email email.Email, emailConfig config.EmailConfig) *EmailService {
 	return &EmailService{
-		email:  email,
-		config: emailConfig,
+		email: email,
+		cfg:   emailConfig,
 	}
 }
 
@@ -51,13 +49,16 @@ func (s *EmailService) UserVerifyCode(to, name string, code int32) (bool, error)
 
 	// Generate email html template.
 	templateInput := verificationEmailInput{Name: name, Code: code}
-	msg.GenerateBodyFromHTML(s.config.Template.Verification, templateInput)
-
-	// Send email message.
-	if err := s.email.Send(msg); err != nil {
-		fmt.Println(err.Error())
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput)
+	if err != nil {
 		return false, err
 	}
 
-	return true, nil
+	// Send email message.
+	status, err := s.email.Send(msg)
+	if err != nil {
+		return status, err
+	}
+
+	return status, nil
 }

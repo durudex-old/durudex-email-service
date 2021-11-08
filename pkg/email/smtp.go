@@ -19,12 +19,14 @@ package email
 
 import (
 	"time"
+	"fmt"
 
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 type SMTP struct {
 	client *mail.SMTPClient
+	cfg    *SMTPConfig
 }
 
 type SMTPConfig struct {
@@ -60,19 +62,35 @@ func NewSMTP(cfg *SMTPConfig) (*SMTP, error) {
 		return nil, err
 	}
 
-	return &SMTP{client: client}, nil
+	// Noop sending messages.
+	if err := client.Noop(); err != nil {
+		return nil, err
+	}
+
+	return &SMTP{client: client, cfg: cfg}, nil
 }
 
 // Sending SMTP message.
-func (s *SMTP) Send(input SendEmailInput) error {
+func (s *SMTP) Send(input SendEmailInput) (bool, error) {
 	// Creating a new message.
 	msg := mail.NewMSG()
 
-	msg.SetFrom("")
+	msg.SetFrom(s.cfg.Username)
 	msg.AddTo(input.To)
 	msg.SetSubject(input.Subject)
 
 	msg.SetBody(mail.TextHTML, input.Body)
+	fmt.Println(input.Body)
 
-	return msg.Send(s.client)
+	// Check for error in the message.
+	if msg.Error != nil {
+		return false, nil
+	}
+
+	// Send email message.
+	if err := msg.Send(s.client); err != nil {
+		return false, nil
+	}
+
+	return true, nil
 }

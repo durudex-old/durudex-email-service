@@ -30,7 +30,7 @@ type SendEmailInput struct {
 }
 
 type Email interface {
-	Send(input SendEmailInput) error
+	Send(input SendEmailInput) (bool, error)
 }
 
 // Generating body from html templates.
