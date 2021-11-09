@@ -19,7 +19,6 @@ package email
 
 import (
 	"time"
-	"fmt"
 
 	mail "github.com/xhit/go-simple-mail/v2"
 )
@@ -80,7 +79,6 @@ func (s *SMTP) Send(input SendEmailInput) (bool, error) {
 	msg.SetSubject(input.Subject)
 
 	msg.SetBody(mail.TextHTML, input.Body)
-	fmt.Println(input.Body)
 
 	// Check for error in the message.
 	if msg.Error != nil {

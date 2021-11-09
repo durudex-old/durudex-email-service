@@ -28,4 +28,4 @@ smtp:
 
 email:
   template:
-    verification: ./templates/verification.hmtl
+    verification: ./templates/verification.html
