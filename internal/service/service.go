@@ -23,7 +23,7 @@ import (
 )
 
 type Email interface {
-	UserCode(to, name string, code int32) (bool, error)
+	UserCode(to, name string, code uint64) (bool, error)
 }
 
 type Service struct {

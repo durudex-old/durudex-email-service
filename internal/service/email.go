@@ -37,11 +37,11 @@ func NewEmailService(email email.Email, emailConfig config.EmailConfig) *EmailSe
 
 type verificationEmailInput struct {
 	Name string
-	Code int32
+	Code uint64
 }
 
 // Send to user email code.
-func (s *EmailService) UserCode(to, name string, code int32) (bool, error) {
+func (s *EmailService) UserCode(to, name string, code uint64) (bool, error) {
 	msg := email.SendEmailInput{
 		To:      to,
 		Subject: "Verification Code",
