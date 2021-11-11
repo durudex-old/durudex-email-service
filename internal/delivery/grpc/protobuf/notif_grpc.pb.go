@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NotifServiceClient interface {
-	UserVerifyCode(ctx context.Context, in *UserVerifyCodeRequest, opts ...grpc.CallOption) (*types.Status, error)
+	UserCode(ctx context.Context, in *UserCodeRequest, opts ...grpc.CallOption) (*types.Status, error)
 }
 
 type notifServiceClient struct {
@@ -30,9 +30,9 @@ func NewNotifServiceClient(cc grpc.ClientConnInterface) NotifServiceClient {
 	return &notifServiceClient{cc}
 }
 
-func (c *notifServiceClient) UserVerifyCode(ctx context.Context, in *UserVerifyCodeRequest, opts ...grpc.CallOption) (*types.Status, error) {
+func (c *notifServiceClient) UserCode(ctx context.Context, in *UserCodeRequest, opts ...grpc.CallOption) (*types.Status, error) {
 	out := new(types.Status)
-	err := c.cc.Invoke(ctx, "/durudex.notif.NotifService/UserVerifyCode", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/durudex.notif.NotifService/UserCode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (c *notifServiceClient) UserVerifyCode(ctx context.Context, in *UserVerifyC
 // All implementations must embed UnimplementedNotifServiceServer
 // for forward compatibility
 type NotifServiceServer interface {
-	UserVerifyCode(context.Context, *UserVerifyCodeRequest) (*types.Status, error)
+	UserCode(context.Context, *UserCodeRequest) (*types.Status, error)
 	mustEmbedUnimplementedNotifServiceServer()
 }
 
@@ -51,8 +51,8 @@ type NotifServiceServer interface {
 type UnimplementedNotifServiceServer struct {
 }
 
-func (UnimplementedNotifServiceServer) UserVerifyCode(context.Context, *UserVerifyCodeRequest) (*types.Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserVerifyCode not implemented")
+func (UnimplementedNotifServiceServer) UserCode(context.Context, *UserCodeRequest) (*types.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCode not implemented")
 }
 func (UnimplementedNotifServiceServer) mustEmbedUnimplementedNotifServiceServer() {}
 
@@ -67,20 +67,20 @@ func RegisterNotifServiceServer(s grpc.ServiceRegistrar, srv NotifServiceServer)
 	s.RegisterService(&NotifService_ServiceDesc, srv)
 }
 
-func _NotifService_UserVerifyCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserVerifyCodeRequest)
+func _NotifService_UserCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifServiceServer).UserVerifyCode(ctx, in)
+		return srv.(NotifServiceServer).UserCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/durudex.notif.NotifService/UserVerifyCode",
+		FullMethod: "/durudex.notif.NotifService/UserCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifServiceServer).UserVerifyCode(ctx, req.(*UserVerifyCodeRequest))
+		return srv.(NotifServiceServer).UserCode(ctx, req.(*UserCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -93,8 +93,8 @@ var NotifService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*NotifServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "UserVerifyCode",
-			Handler:    _NotifService_UserVerifyCode_Handler,
+			MethodName: "UserCode",
+			Handler:    _NotifService_UserCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

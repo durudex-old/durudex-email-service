@@ -39,10 +39,10 @@ func NewEmailHandler(service *service.Service) *EmailHandler {
 	}
 }
 
-// Sending a user verification code to the email.
-func (h *EmailHandler) UserVerifyCode(ctx context.Context, input *pb.UserVerifyCodeRequest) (*types.Status, error) {
-	// Send to user verification email code.
-	emailStatus, err := h.service.Email.UserVerifyCode(input.Email, input.Name, input.Code)
+// Sending a user code to the email.
+func (h *EmailHandler) UserCode(ctx context.Context, input *pb.UserCodeRequest) (*types.Status, error) {
+	// Send to user email code.
+	emailStatus, err := h.service.Email.UserCode(input.Email, input.Name, input.Code)
 	if err != nil {
 		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
 	}

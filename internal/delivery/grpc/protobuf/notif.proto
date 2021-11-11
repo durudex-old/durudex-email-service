@@ -22,10 +22,10 @@ option go_package = "github.com/Durudex/durudex-notif-service/internal/delivery/
 import "internal/delivery/grpc/protobuf/types/status.proto";
 
 service NotifService {
-  rpc UserVerifyCode(UserVerifyCodeRequest) returns (types.status.Status);
+  rpc UserCode(UserCodeRequest) returns (types.status.Status);
 }
 
-message UserVerifyCodeRequest {
+message UserCodeRequest {
   string email = 1;
   string name = 2;
   int32 code = 3;

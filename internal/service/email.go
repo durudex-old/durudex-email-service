@@ -40,8 +40,8 @@ type verificationEmailInput struct {
 	Code int32
 }
 
-// Send to user email verification code.
-func (s *EmailService) UserVerifyCode(to, name string, code int32) (bool, error) {
+// Send to user email code.
+func (s *EmailService) UserCode(to, name string, code int32) (bool, error) {
 	msg := email.SendEmailInput{
 		To:      to,
 		Subject: "Verification Code",
