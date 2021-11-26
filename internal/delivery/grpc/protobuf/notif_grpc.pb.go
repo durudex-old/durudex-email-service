@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NotifServiceClient interface {
 	UserCode(ctx context.Context, in *UserCodeRequest, opts ...grpc.CallOption) (*types.Status, error)
+	UserLoggedIn(ctx context.Context, in *UserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error)
 }
 
 type notifServiceClient struct {
@@ -39,11 +40,21 @@ func (c *notifServiceClient) UserCode(ctx context.Context, in *UserCodeRequest, 
 	return out, nil
 }
 
+func (c *notifServiceClient) UserLoggedIn(ctx context.Context, in *UserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error) {
+	out := new(types.Status)
+	err := c.cc.Invoke(ctx, "/durudex.notif.NotifService/UserLoggedIn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotifServiceServer is the server API for NotifService service.
 // All implementations must embed UnimplementedNotifServiceServer
 // for forward compatibility
 type NotifServiceServer interface {
 	UserCode(context.Context, *UserCodeRequest) (*types.Status, error)
+	UserLoggedIn(context.Context, *UserLoggedInRequest) (*types.Status, error)
 	mustEmbedUnimplementedNotifServiceServer()
 }
 
@@ -53,6 +64,9 @@ type UnimplementedNotifServiceServer struct {
 
 func (UnimplementedNotifServiceServer) UserCode(context.Context, *UserCodeRequest) (*types.Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCode not implemented")
+}
+func (UnimplementedNotifServiceServer) UserLoggedIn(context.Context, *UserLoggedInRequest) (*types.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLoggedIn not implemented")
 }
 func (UnimplementedNotifServiceServer) mustEmbedUnimplementedNotifServiceServer() {}
 
@@ -85,6 +99,24 @@ func _NotifService_UserCode_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifService_UserLoggedIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLoggedInRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifServiceServer).UserLoggedIn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/durudex.notif.NotifService/UserLoggedIn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifServiceServer).UserLoggedIn(ctx, req.(*UserLoggedInRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotifService_ServiceDesc is the grpc.ServiceDesc for NotifService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -95,6 +127,10 @@ var NotifService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserCode",
 			Handler:    _NotifService_UserCode_Handler,
+		},
+		{
+			MethodName: "UserLoggedIn",
+			Handler:    _NotifService_UserLoggedIn_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

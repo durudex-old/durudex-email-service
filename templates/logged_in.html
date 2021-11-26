@@ -44,27 +44,16 @@
       padding-top: 30px
     }
 
-    .content h1 {
+    .sign_in {
+      margin: auto;
       padding-top: 45px;
-      color: #0263F4;
-      font-size: 30px;
-      font-weight: bold;
-    }
-
-    .verification {
-      padding-top: 45px;
+      max-width: 450px;
       padding-bottom: 60px;
     }
 
-    .verification span {
+    .sign_in span {
       font-size: 25px;
       font-weight: normal;
-    }
-
-    .verification h3 {
-      padding-top: 20px;
-      font-weight: 800;
-      font-size: 30px;
     }
   </style>
 </head>
@@ -72,10 +61,9 @@
   <div class="container">
     <div class="content">
       <img src="../assets/durudex.png" alt="durudex">
-        <h1>Hi, {{.Name}}!</h1>
-        <div class="verification">
-          <span>Here’s your verification code:</span>
-          <h3>{{.Code}}</h3>
+        <div class="sign_in">
+          <span>You are logged in to you account with IP: <b>{{.IP}}</b>.
+          If it wasn't you, change yout account password immediately!</span>
         </div>
     </div>
   </div>

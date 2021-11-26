@@ -49,3 +49,14 @@ func (h *EmailHandler) UserCode(ctx context.Context, input *pb.UserCodeRequest) 
 
 	return &types.Status{Status: emailStatus}, nil
 }
+
+// Sending a user logged in information.
+func (h *EmailHandler) UserLoggedIn(ctx context.Context, input *pb.UserLoggedInRequest) (*types.Status, error) {
+	// Send to user logged in information.
+	emailStatus, err := h.service.UserLoggedIn(input.Email, input.Ip)
+	if err != nil {
+		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.Status{Status: emailStatus}, nil
+}

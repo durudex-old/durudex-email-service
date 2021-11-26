@@ -23,10 +23,16 @@ import "internal/delivery/grpc/protobuf/types/status.proto";
 
 service NotifService {
   rpc UserCode(UserCodeRequest) returns (types.status.Status);
+  rpc UserLoggedIn(UserLoggedInRequest) returns (types.status.Status);
 }
 
 message UserCodeRequest {
   string email = 1;
   string name = 2;
   uint64 code = 3;
+}
+
+message UserLoggedInRequest {
+  string email = 1;
+  string ip = 2;
 }

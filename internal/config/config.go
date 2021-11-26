@@ -60,6 +60,7 @@ type (
 	// Email templates config variables.
 	EmailTemplate struct {
 		Verification string `mapstructure:"verification"`
+		LoggedIn     string `mapstructure:"loggedIn"`
 	}
 )
 

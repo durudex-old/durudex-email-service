@@ -42,6 +42,7 @@ type verificationEmailInput struct {
 
 // Send to user email code.
 func (s *EmailService) UserCode(to, name string, code uint64) (bool, error) {
+	// Create a new email message.
 	msg := email.SendEmailInput{
 		To:      to,
 		Subject: "Verification Code",
@@ -55,10 +56,28 @@ func (s *EmailService) UserCode(to, name string, code uint64) (bool, error) {
 	}
 
 	// Send email message.
-	status, err := s.email.Send(msg)
-	if err != nil {
-		return status, err
+	return s.email.Send(msg)
+}
+
+type loggedInEmailInput struct {
+	IP string
+}
+
+// Send to user logged in information.
+func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
+	// Create a new email message.
+	msg := email.SendEmailInput{
+		To:      to,
+		Subject: "You have successfully logged in",
 	}
 
-	return status, nil
+	// Generate email html template.
+	templateInput := loggedInEmailInput{IP: ip}
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.LoggedIn, templateInput)
+	if err != nil {
+		return false, err
+	}
+
+	// Send email message.
+	return s.email.Send(msg)
 }

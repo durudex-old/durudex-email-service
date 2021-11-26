@@ -82,12 +82,12 @@ func (s *SMTP) Send(input SendEmailInput) (bool, error) {
 
 	// Check for error in the message.
 	if msg.Error != nil {
-		return false, nil
+		return false, msg.Error
 	}
 
 	// Send email message.
 	if err := msg.Send(s.client); err != nil {
-		return false, nil
+		return false, err
 	}
 
 	return true, nil
