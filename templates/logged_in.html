@@ -55,6 +55,48 @@
       font-size: 25px;
       font-weight: normal;
     }
+
+    @media only screen and (max-width: 620px) {
+      .container {
+        padding: 60px 0 60px 0;
+      }
+
+      .content {
+        width: auto;
+      }
+
+      .sign_in {
+        padding: 40px 5px 50px 5px;
+      }
+
+      .sign_in span {
+        font-size: 20px;
+      }
+
+      .durudex-logo {
+        width: 300px;
+        height: 65px;
+      }
+    }
+
+    @media only screen and (max-width: 350px) {
+      .container {
+        padding: 50px 0 50px 0;
+      }
+
+      .sign_in {
+        padding: 30px 4px 30px 4px;
+      }
+
+      .sign_in span {
+        font-size: 15px;
+      }
+
+      .durudex-logo {
+        width: 250px;
+        height: 55px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -139,7 +181,7 @@
         XZpV2TMfbAUO9qOBuU9V5LhXcZ5OC+4yBSxL1pdvQO62xuN7/vd/h9b85BvbASyTCmax0gwrbBz6/Yjg
         b1wB+sJZz3W2qT/umRAqp6T0Xcd+r3UJg0b17vM/w8j8CX5n3GjC/1EYRIEWmaQjEYH85ooNH8TM3bux
         ZK9kgSBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEGoDv4PvAdNHyqbmV
-        EAAAAASUVORK5CYII=" alt="durudex">
+        EAAAAASUVORK5CYII=" alt="durudex" class="durudex-logo">
       <div class="sign_in">
         <span>You are logged in to you account with IP: <b>{{.IP}}</b>.
         If it wasn't you, change yout account password immediately!</span>
