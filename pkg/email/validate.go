@@ -27,9 +27,9 @@ const (
 // Avaivable characters in email.
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
-// Check email lenght and characters.
+// Check email length and characters.
 func IsEmailValid(email string) bool {
-	// Check email lenght.
+	// Check email length.
 	if len(email) < minEmailLen || len(email) > maxEmailLen {
 		return false
 	}

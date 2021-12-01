@@ -62,7 +62,7 @@ func (e *SendEmailInput) Validate() error {
 	if e.Subject == "" || e.Body == "" {
 		return errors.New("empty subject/body")
 	}
-	// Check email lenght and characters.
+	// Check email length and characters.
 	if !IsEmailValid(e.To) {
 		return errors.New("invalid to email")
 	}

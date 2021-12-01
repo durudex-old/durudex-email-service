@@ -13,40 +13,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Durudex. If not, see <https://www.gnu.org/licenses/>.
 
-.PHONY: download
-download:
-	go mod download
+name: CI-stage
 
-.PHONY: build
-build: download
-	go build -o .bin/notifservice.exe ./cmd/notifservice/main.go
+on:
+  push:
+    branches:
+      - dev
 
-.PHONY: run
-run: download
-	go run ./cmd/notifservice/main.go
+jobs:
 
-.PHONY: lint
-lint:
-	golangci-lint run
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
 
-.PHONY: test
-test: lint
-	go test -v ./...
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-.PHONY: protoc
-protoc:
-	protoc \
-		--go_out=. \
-		--go_opt=paths=source_relative \
-		--go-grpc_out=. \
-		--go-grpc_opt=paths=source_relative \
-		internal/delivery/grpc/protobuf/*.proto
-
-.PHONY: protoc-types
-protoc-types:
-	protoc \
-		--go_out=. \
-		--go_opt=paths=source_relative \
-		internal/delivery/grpc/protobuf/types/*.proto
-
-.DEFAULT_GOAL := run
+      - name: Unit Tests
+        run: go test --short ./...
