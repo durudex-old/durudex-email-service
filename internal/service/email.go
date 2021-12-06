@@ -36,12 +36,12 @@ func NewEmailService(email email.Email, emailConfig config.EmailConfig) *EmailSe
 }
 
 type verificationEmailInput struct {
-	Name string
-	Code uint64
+	Username string
+	Code     uint64
 }
 
 // Send to user email code.
-func (s *EmailService) UserCode(to, name string, code uint64) (bool, error) {
+func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) {
 	// Create a new email message.
 	msg := email.SendEmailInput{
 		To:      to,
@@ -49,7 +49,7 @@ func (s *EmailService) UserCode(to, name string, code uint64) (bool, error) {
 	}
 
 	// Generate email html template.
-	templateInput := verificationEmailInput{Name: name, Code: code}
+	templateInput := verificationEmailInput{Username: username, Code: code}
 	err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput)
 	if err != nil {
 		return false, err

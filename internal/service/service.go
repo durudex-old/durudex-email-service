@@ -23,7 +23,7 @@ import (
 )
 
 type Email interface {
-	UserCode(to, name string, code uint64) (bool, error)
+	UserCode(to, username string, code uint64) (bool, error)
 	UserLoggedIn(to, ip string) (bool, error)
 }
 
