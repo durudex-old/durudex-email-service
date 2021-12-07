@@ -28,7 +28,7 @@ service NotifService {
 
 message UserCodeRequest {
   string email = 1;
-  string name = 2;
+  string username = 2;
   uint64 code = 3;
 }
 
