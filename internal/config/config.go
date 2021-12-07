@@ -18,12 +18,20 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+)
+
+// Default variables.
+const (
+	defaultGRPCPort = "8002"
+	defaultGRPCHost = "notifservice.durudex.local"
+	defaultGRPCTLS  = true
 )
 
 type (
@@ -65,24 +73,31 @@ type (
 )
 
 // Initialize config.
-func Init(configPath string) *Config {
+func Init(configPath string) (*Config, error) {
 	log.Debug().Msg("Initialize config...")
 
+	// Populate defaults config variables.
+	populateDefaults()
+
 	// Parsing config file.
-	parseConfigFile(configPath)
+	if err := parseConfigFile(configPath); err != nil {
+		return nil, fmt.Errorf("error parsing config file: %s", err.Error())
+	}
 
 	var cfg Config
 	// Unmarshal config keys.
-	unmarshal(&cfg)
+	if err := unmarshal(&cfg); err != nil {
+		return nil, fmt.Errorf("error unmarshal config keys: %s", err.Error())
+	}
 
 	// Set env configurations.
 	setFromEnv(&cfg)
 
-	return &cfg
+	return &cfg, nil
 }
 
 // Parsing config file.
-func parseConfigFile(configPath string) {
+func parseConfigFile(configPath string) error {
 	log.Debug().Msgf("Parsing config file: %s", configPath)
 
 	// Split path to folder and file.
@@ -92,31 +107,38 @@ func parseConfigFile(configPath string) {
 	viper.SetConfigName(path[1]) // file
 
 	// Read config file.
-	if err := viper.ReadInConfig(); err != nil {
-		log.Error().Msgf("error parsing config file: %s", err.Error())
-	}
+	return viper.ReadInConfig()
 }
 
 // Unmarshal config keys.
-func unmarshal(cfg *Config) {
+func unmarshal(cfg *Config) error {
 	log.Debug().Msg("Unmarshal config keys...")
 
 	// Unmarshal grpc keys.
 	if err := viper.UnmarshalKey("grpc", &cfg.GRPC); err != nil {
-		log.Error().Msgf("error unmarshal grpc keys: %s", err.Error())
+		return err
 	}
 	// Unmarshal smpt keys.
 	if err := viper.UnmarshalKey("smtp", &cfg.SMTP); err != nil {
-		log.Error().Msgf("error unmarshal smtp keys: %s", err.Error())
+		return err
 	}
 	// Unmarshal email keys.
-	if err := viper.UnmarshalKey("email.template", &cfg.Email.Template); err != nil {
-		log.Error().Msgf("error unmarshal email template keys: %s", err.Error())
-	}
+	return viper.UnmarshalKey("email.template", &cfg.Email.Template)
 }
 
 // Seting environment variables from .env file.
 func setFromEnv(cfg *Config) {
+	log.Debug().Msg("Set from environment configurations...")
+
 	cfg.SMTP.Username = os.Getenv("SMTP_USERNAME")
 	cfg.SMTP.Password = os.Getenv("SMTP_PASSWORD")
+}
+
+// Populate defaults config variables.
+func populateDefaults() {
+	log.Debug().Msg("Populate defaults config variables...")
+
+	viper.SetDefault("grpc.host", defaultGRPCHost)
+	viper.SetDefault("grpc.port", defaultGRPCPort)
+	viper.SetDefault("grpc.tls", defaultGRPCTLS)
 }

@@ -33,7 +33,10 @@ import (
 // Run durudex auth service application.
 func Run(configPath string) {
 	// Initialize config.
-	cfg := config.Init(configPath)
+	cfg, err := config.Init(configPath)
+	if err != nil {
+		log.Error().Msg(err.Error())
+	}
 
 	// Managers.
 	emailManager, err := email.NewSMTP(&email.SMTPConfig{
