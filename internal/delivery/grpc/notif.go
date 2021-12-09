@@ -60,3 +60,14 @@ func (h *EmailHandler) UserLoggedIn(ctx context.Context, input *pb.UserLoggedInR
 
 	return &types.Status{Status: emailStatus}, nil
 }
+
+// Sending a user register information.
+func (h *EmailHandler) UserRegister(ctx context.Context, input *pb.UserRegisterRequest) (*types.Status, error) {
+	// Send to user register information.
+	emailStatus, err := h.service.UserRegister(input.Email, input.Username)
+	if err != nil {
+		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.Status{Status: emailStatus}, nil
+}

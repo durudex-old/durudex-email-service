@@ -24,6 +24,7 @@ import "internal/delivery/grpc/protobuf/types/status.proto";
 service NotifService {
   rpc UserCode(UserCodeRequest) returns (types.status.Status);
   rpc UserLoggedIn(UserLoggedInRequest) returns (types.status.Status);
+  rpc UserRegister(UserRegisterRequest) returns (types.status.Status);
 }
 
 message UserCodeRequest {
@@ -35,4 +36,9 @@ message UserCodeRequest {
 message UserLoggedInRequest {
   string email = 1;
   string ip = 2;
+}
+
+message UserRegisterRequest {
+  string email = 1;
+  string username = 2;
 }

@@ -69,6 +69,7 @@ type (
 	EmailTemplate struct {
 		Verification string `mapstructure:"verification"`
 		LoggedIn     string `mapstructure:"loggedIn"`
+		Register     string `mapstructure:"register"`
 	}
 )
 

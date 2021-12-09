@@ -81,3 +81,26 @@ func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
 	// Send email message.
 	return s.email.Send(msg)
 }
+
+type registerEmailInput struct {
+	Username string
+}
+
+// Send to user register information.
+func (s *EmailService) UserRegister(to, username string) (bool, error) {
+	// Create a new email message.
+	msg := email.SendEmailInput{
+		To:      to,
+		Subject: "You have successfully created a new account",
+	}
+
+	// Generate email html template.
+	templateInput := registerEmailInput{Username: username}
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.Register, templateInput)
+	if err != nil {
+		return false, err
+	}
+
+	// Send email message.
+	return s.email.Send(msg)
+}

@@ -28,5 +28,6 @@ smtp:
 
 email:
   template:
-    verification: ./templates/verification.html
-    loggedIn: ./templates/logged_in.html
+    verification: ./web/template/verification.html
+    loggedIn: ./web/template/logged_in.html
+    register: ./web/template/register.html
