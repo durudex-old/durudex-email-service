@@ -25,6 +25,7 @@ import (
 	"github.com/durudex/durudex-email-service/internal/config"
 	"github.com/durudex/durudex-email-service/internal/delivery/grpc"
 	"github.com/durudex/durudex-email-service/internal/server"
+	"github.com/durudex/durudex-email-service/internal/service"
 
 	"github.com/rs/zerolog/log"
 )
@@ -37,8 +38,9 @@ func Run(configPath string) {
 		log.Error().Msgf("error initialize config: %s", err.Error())
 	}
 
-	// Create a new gRPC handler.
-	grpcHandler := grpc.NewHandler()
+	// Creating a new service and handlers.
+	service := service.NewService()
+	grpcHandler := grpc.NewHandler(service)
 
 	// Creating a new server.
 	srv, err := server.NewServer(cfg, grpcHandler)

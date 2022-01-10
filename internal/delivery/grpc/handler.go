@@ -19,19 +19,22 @@ package grpc
 
 import (
 	"github.com/durudex/durudex-email-service/internal/delivery/grpc/pb"
+	"github.com/durudex/durudex-email-service/internal/service"
 
 	"google.golang.org/grpc"
 )
 
 // GRPC handler structure.
-type Handler struct{}
+type Handler struct {
+	service *service.Service
+}
 
 // Creating a new gRPC handler.
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(service *service.Service) *Handler {
+	return &Handler{service: service}
 }
 
 // Regisctration services handlers.
 func (h *Handler) RegisterHandlers(s *grpc.Server) {
-	pb.RegisterEmailServiceServer(s, NewEmailHandler())
+	pb.RegisterEmailServiceServer(s, NewEmailHandler(h.service))
 }

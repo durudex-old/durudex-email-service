@@ -39,5 +39,6 @@ Copyright © 2021-2022 [Durudex](https://github.com/Durudex). Released under the
 
 #### Third-party library licenses
 + [grpc-go](https://github.com/grpc/grpc-go/blob/master/LICENSE)
++ [protobuf](https://github.com/protocolbuffers/protobuf/blob/master/LICENSE)
 + [zerolog](https://github.com/rs/zerolog/blob/master/LICENSE)
 + [viper](https://github.com/spf13/viper/blob/master/LICENSE)

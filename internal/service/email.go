@@ -15,20 +15,12 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package grpc
+package service
 
-import (
-	"github.com/durudex/durudex-email-service/internal/delivery/grpc/pb"
-	"github.com/durudex/durudex-email-service/internal/service"
-)
+// Email service structure.
+type EmailService struct{}
 
-// Email handler structure.
-type EmailHandler struct {
-	service service.Email
-	pb.UnimplementedEmailServiceServer
-}
-
-// Creating a new gRPC email handler.
-func NewEmailHandler(service service.Email) *EmailHandler {
-	return &EmailHandler{service: service}
+// Creating a new email service.
+func NewEmailService() *EmailService {
+	return &EmailService{}
 }
