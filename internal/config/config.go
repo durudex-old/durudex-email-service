@@ -18,7 +18,9 @@
 package config
 
 import (
+	"os"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -27,8 +29,8 @@ import (
 type (
 	// Config variables.
 	Config struct {
-		// Server config variables.
-		Server ServerConfig
+		Server ServerConfig // Server config variables.
+		SMTP   SMTPConfig   // SMTP config variables.
 	}
 
 	// Server config variables.
@@ -36,6 +38,18 @@ type (
 		Host string `mapstructure:"host"`
 		Port string `mapstructure:"port"`
 		TLS  bool   `mapstructure:"tls"`
+	}
+
+	// SMTP config variables.
+	SMTPConfig struct {
+		Host           string        `mapstructure:"host"`
+		Port           int           `mapstructure:"port"`
+		ConnectTimeout time.Duration `mapstructure:"connectTimeout"`
+		SendTimeout    time.Duration `mapstructure:"sendTimeout"`
+		Helo           string        `mapstructure:"helo"`
+		KeepAlive      bool          `mapstructure:"keepAlive"`
+		Username       string
+		Password       string
 	}
 )
 
@@ -58,6 +72,9 @@ func Init(configPath string) (*Config, error) {
 		return nil, err
 	}
 
+	// Set configurations from environment.
+	setFromEnv(&cfg)
+
 	return &cfg, nil
 }
 
@@ -79,8 +96,21 @@ func parseConfigFile(configPath string) error {
 func unmarshal(cfg *Config) error {
 	log.Debug().Msg("Unmarshal config keys...")
 
+	// Unmarshal smtp keys.
+	if err := viper.UnmarshalKey("smtp", &cfg.SMTP); err != nil {
+		return err
+	}
 	// Unmarshal server keys.
 	return viper.UnmarshalKey("server", &cfg.Server)
+}
+
+// Set configurations from environment.
+func setFromEnv(cfg *Config) {
+	log.Debug().Msg("Set configurations from environment...")
+
+	// SMTP configurations.
+	cfg.SMTP.Username = os.Getenv("SMTP_USERNAME")
+	cfg.SMTP.Password = os.Getenv("SMTP_PASSWORD")
 }
 
 // Populate defaults config variables.
@@ -91,4 +121,12 @@ func populateDefaults() {
 	viper.SetDefault("server.host", defaultServerHost)
 	viper.SetDefault("server.port", defaultServerPort)
 	viper.SetDefault("server.tls", defaultServerTLS)
+
+	// SMTP defaults.
+	viper.SetDefault("smtp.host", defaultSMTPHost)
+	viper.SetDefault("smtp.port", defaultServerPort)
+	viper.SetDefault("smtp.connectTimeout", defaultSMTPConnectTimeout)
+	viper.SetDefault("smtp.sendTimeout", defaultSMTPSendTimeout)
+	viper.SetDefault("smtp.helo", defaultSMTPHelo)
+	viper.SetDefault("smtp.keepAlive", defaultSMTPKeepAlive)
 }

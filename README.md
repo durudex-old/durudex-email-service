@@ -25,7 +25,16 @@ Service for sending email messages.
 + [grpc](https://grpc.io/docs/languages/go/quickstart/)
 
 ## ⚙️ Build & Run
-1) Generate certificates, information can be found at [cert/README.md](certs/README.md)
+1) Add variables from `.env.example` to your environment variables:
+```sh
+# Email username.
+SMTP_USERNAME=
+# Email password.
+SMTP_PASSWORD=
+```
+2) If you use a default `smtp.host` and `smtp.port` configuration,
+create SMTP server with address: `smtp.durudex.local:25`.
+3) Generate certificates, information can be found at [certs/README.md](certs/README.md)
 
 Use `make run` to run and `make build` to build project.
 
@@ -42,3 +51,4 @@ Copyright © 2021-2022 [Durudex](https://github.com/Durudex). Released under the
 + [protobuf](https://github.com/protocolbuffers/protobuf/blob/master/LICENSE)
 + [zerolog](https://github.com/rs/zerolog/blob/master/LICENSE)
 + [viper](https://github.com/spf13/viper/blob/master/LICENSE)
++ [go-simple-mail](https://github.com/xhit/go-simple-mail/blob/master/LICENSE)

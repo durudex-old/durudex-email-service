@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Durudex
+ * Copyright © 2021-2022 Durudex
 
  * This file is part of Durudex: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -15,21 +15,25 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package config
+package email
 
-import "time"
+import "regexp"
 
 const (
-	// Server defaults.
-	defaultServerHost = "emailservice.durudex.local"
-	defaultServerPort = "8002"
-	defaultServerTLS  = true
-
-	// SMTP defaults.
-	defaultSMTPHost           = "smtp.durudex.local"
-	defaultSMTPPort           = 25
-	defaultSMTPConnectTimeout = time.Second * 10
-	defaultSMTPSendTimeout    = time.Second * 10
-	defaultSMTPHelo           = "durudex"
-	defaultSMTPKeepAlive      = true
+	minEmailLen = 3   // Minimal email length.
+	maxEmailLen = 255 // Maximum email length.
 )
+
+// Avaivable characters in email.
+var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
+// Check email length and characters.
+func IsEmailValid(email string) bool {
+	// Check email length.
+	if len(email) < minEmailLen || len(email) > maxEmailLen {
+		return false
+	}
+
+	// Math email string.
+	return emailRegex.MatchString(email)
+}
