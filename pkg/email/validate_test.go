@@ -15,16 +15,23 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package domain
+package email
 
-// Verification email message input.
-type VerificationEmailInput struct {
-	Username string
-	Code     uint64
+import "testing"
+
+// Testing checking email length and characters.
+func TestIsEmailValid(t *testing.T) {
+	var (
+		valid   = "example@example.com"
+		unvalid = "example"
+	)
+
+	// Check valid email.
+	if val := IsEmailValid(valid); val != true {
+		t.Error("error checking valid email")
+	}
+	// Check unvalid email.
+	if val := IsEmailValid(unvalid); val != false {
+		t.Error("error ckecking unvalid email")
+	}
 }
-
-// Register email message input
-type RegisterEmailInput struct{ Username string }
-
-// Logged in email message input.
-type LoggedInEmailInput struct{ IP string }

@@ -29,6 +29,10 @@ run: download
 lint:
 	golangci-lint run
 
+.PHONY: test
+test: lint
+	go test -v ./...
+
 .PHONY: protoc
 protoc:
 	protoc \

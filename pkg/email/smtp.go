@@ -72,6 +72,11 @@ func NewClient(cfg *SMTPConfig) (*Client, error) {
 
 // Send client message.
 func (c *Client) Send(input SendEmailInput) (bool, error) {
+	// Check email message input.
+	if err := input.Validate(); err != nil {
+		return false, err
+	}
+
 	// Creating a new message.
 	msg := mail.NewMSG()
 

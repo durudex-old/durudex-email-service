@@ -43,8 +43,7 @@ func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) 
 	templateInput := domain.VerificationEmailInput{Username: username, Code: code}
 
 	// Generate email html template.
-	err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput)
-	if err != nil {
+	if err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput); err != nil {
 		return false, err
 	}
 
@@ -61,8 +60,7 @@ func (s *EmailService) UserRegister(to, username string) (bool, error) {
 	templateInput := domain.RegisterEmailInput{Username: username}
 
 	// Generate email html template.
-	err := msg.GenerateBodyFromHTML(s.cfg.Template.Register, templateInput)
-	if err != nil {
+	if err := msg.GenerateBodyFromHTML(s.cfg.Template.Register, templateInput); err != nil {
 		return false, err
 	}
 
@@ -79,8 +77,7 @@ func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
 	templateInput := domain.LoggedInEmailInput{IP: ip}
 
 	// Generate email html template.
-	err := msg.GenerateBodyFromHTML(s.cfg.Template.LoggedIn, templateInput)
-	if err != nil {
+	if err := msg.GenerateBodyFromHTML(s.cfg.Template.LoggedIn, templateInput); err != nil {
 		return false, err
 	}
 

@@ -141,7 +141,7 @@ func populateDefaults() {
 
 	// SMTP defaults.
 	viper.SetDefault("smtp.host", defaultSMTPHost)
-	viper.SetDefault("smtp.port", defaultServerPort)
+	viper.SetDefault("smtp.port", defaultSMTPPort)
 	viper.SetDefault("smtp.connectTimeout", defaultSMTPConnectTimeout)
 	viper.SetDefault("smtp.sendTimeout", defaultSMTPSendTimeout)
 	viper.SetDefault("smtp.helo", defaultSMTPHelo)
