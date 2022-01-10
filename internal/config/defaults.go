@@ -32,4 +32,9 @@ const (
 	defaultSMTPSendTimeout    = time.Second * 10
 	defaultSMTPHelo           = "durudex"
 	defaultSMTPKeepAlive      = true
+
+	// Email templates defaults.
+	defaultEmailTemplateVerification = "./web/template/verification.html"
+	defaultEmailTemplateLoggedIn     = "./web/template/logged_in.html"
+	defaultEmailTemplateRegister     = "./web/template/register.html"
 )

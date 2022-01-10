@@ -52,6 +52,8 @@ func NewClient(cfg *SMTPConfig) (*Client, error) {
 		SendTimeout:    cfg.SendTimeout,
 		Helo:           cfg.Helo,
 		KeepAlive:      cfg.KeepAlive,
+		Authentication: mail.AuthNone,
+		Encryption:     mail.EncryptionNone,
 	}
 
 	// Connecting to SMTP server.

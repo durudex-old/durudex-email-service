@@ -17,10 +17,73 @@
 
 package service
 
+import (
+	"github.com/durudex/durudex-email-service/internal/config"
+	"github.com/durudex/durudex-email-service/internal/domain"
+	"github.com/durudex/durudex-email-service/pkg/email"
+)
+
 // Email service structure.
-type EmailService struct{}
+type EmailService struct {
+	email email.Email
+	cfg   config.EmailConfig
+}
 
 // Creating a new email service.
-func NewEmailService() *EmailService {
-	return &EmailService{}
+func NewEmailService(email email.Email, cfg config.EmailConfig) *EmailService {
+	return &EmailService{email: email, cfg: cfg}
+}
+
+// Send to user email verification code.
+func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) {
+	// Create a new email message.
+	msg := email.SendEmailInput{To: to, Subject: "Verification Code"}
+
+	// Create html template input.
+	templateInput := domain.VerificationEmailInput{Username: username, Code: code}
+
+	// Generate email html template.
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput)
+	if err != nil {
+		return false, err
+	}
+
+	// Send email message.
+	return s.email.Send(msg)
+}
+
+// Send to user email register information.
+func (s *EmailService) UserRegister(to, username string) (bool, error) {
+	// Create a new email message.
+	msg := email.SendEmailInput{To: to, Subject: "You have successfully created a new account"}
+
+	// Create html template input.
+	templateInput := domain.RegisterEmailInput{Username: username}
+
+	// Generate email html template.
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.Register, templateInput)
+	if err != nil {
+		return false, err
+	}
+
+	// Send email message.
+	return s.email.Send(msg)
+}
+
+// Send to user email logged in information.
+func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
+	// Create a new email message.
+	msg := email.SendEmailInput{To: to, Subject: "You have successfully logged in"}
+
+	// Create html template input.
+	templateInput := domain.LoggedInEmailInput{IP: ip}
+
+	// Generate email html template.
+	err := msg.GenerateBodyFromHTML(s.cfg.Template.LoggedIn, templateInput)
+	if err != nil {
+		return false, err
+	}
+
+	// Send email message.
+	return s.email.Send(msg)
 }

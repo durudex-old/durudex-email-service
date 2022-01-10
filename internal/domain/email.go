@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021-2022 Durudex
+ * Copyright © 2022 Durudex
 
  * This file is part of Durudex: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -15,24 +15,20 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package service
+package domain
 
-import (
-	"github.com/durudex/durudex-email-service/internal/config"
-	"github.com/durudex/durudex-email-service/pkg/email"
-)
-
-// Email interface.
-type Email interface {
-	UserCode(to, username string, code uint64) (bool, error)
-	UserRegister(to, username string) (bool, error)
-	UserLoggedIn(to, ip string) (bool, error)
+// Verification email message input.
+type VerificationEmailInput struct {
+	Username string
+	Code     uint64
 }
 
-// Service structure.
-type Service struct{ Email }
+// Register email message input
+type RegisterEmailInput struct {
+	Username string
+}
 
-// Creating a new service.
-func NewService(email email.Email, cfg *config.Config) *Service {
-	return &Service{Email: NewEmailService(email, cfg.Email)}
+// Logged in email message input.
+type LoggedInEmailInput struct {
+	IP string
 }

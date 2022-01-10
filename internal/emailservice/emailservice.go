@@ -26,6 +26,7 @@ import (
 	"github.com/durudex/durudex-email-service/internal/delivery/grpc"
 	"github.com/durudex/durudex-email-service/internal/server"
 	"github.com/durudex/durudex-email-service/internal/service"
+	"github.com/durudex/durudex-email-service/pkg/email"
 
 	"github.com/rs/zerolog/log"
 )
@@ -38,8 +39,14 @@ func Run(configPath string) {
 		log.Error().Msgf("error initialize config: %s", err.Error())
 	}
 
+	// Create a new email client.
+	emailClient, err := createEmailClient(cfg.SMTP)
+	if err != nil {
+		log.Error().Msgf("error creating email client: %s", err.Error())
+	}
+
 	// Creating a new service and handlers.
-	service := service.NewService()
+	service := service.NewService(emailClient, cfg)
 	grpcHandler := grpc.NewHandler(service)
 
 	// Creating a new server.
@@ -58,4 +65,18 @@ func Run(configPath string) {
 
 	// Stoping server.
 	srv.Stop()
+}
+
+// Creating a new email client.
+func createEmailClient(cfg config.SMTPConfig) (*email.Client, error) {
+	return email.NewClient(&email.SMTPConfig{
+		Host:           cfg.Host,
+		Port:           cfg.Port,
+		Username:       cfg.Username,
+		Password:       cfg.Password,
+		ConnectTimeout: cfg.ConnectTimeout,
+		SendTimeout:    cfg.SendTimeout,
+		Helo:           cfg.Helo,
+		KeepAlive:      cfg.KeepAlive,
+	})
 }

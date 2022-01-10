@@ -25,3 +25,9 @@ smtp:
   sendTimeout: 10s
   helo: durudex
   keepAlive: true
+
+email:
+  template:
+    verification: ./web/template/verification.html
+    loggedIn: ./web/template/logged_in.html
+    register: ./web/template/register.html

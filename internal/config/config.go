@@ -31,6 +31,7 @@ type (
 	Config struct {
 		Server ServerConfig // Server config variables.
 		SMTP   SMTPConfig   // SMTP config variables.
+		Email  EmailConfig  // Email config variables.
 	}
 
 	// Server config variables.
@@ -50,6 +51,18 @@ type (
 		KeepAlive      bool          `mapstructure:"keepAlive"`
 		Username       string
 		Password       string
+	}
+
+	// Email config variables.
+	EmailConfig struct {
+		Template EmailTemplate
+	}
+
+	// Email templates config variables.
+	EmailTemplate struct {
+		Verification string `mapstructure:"verification"`
+		LoggedIn     string `mapstructure:"loggedIn"`
+		Register     string `mapstructure:"register"`
 	}
 )
 
@@ -100,6 +113,10 @@ func unmarshal(cfg *Config) error {
 	if err := viper.UnmarshalKey("smtp", &cfg.SMTP); err != nil {
 		return err
 	}
+	// Unmarshal email template keys.
+	if err := viper.UnmarshalKey("email.template", &cfg.Email.Template); err != nil {
+		return err
+	}
 	// Unmarshal server keys.
 	return viper.UnmarshalKey("server", &cfg.Server)
 }
@@ -129,4 +146,10 @@ func populateDefaults() {
 	viper.SetDefault("smtp.sendTimeout", defaultSMTPSendTimeout)
 	viper.SetDefault("smtp.helo", defaultSMTPHelo)
 	viper.SetDefault("smtp.keepAlive", defaultSMTPKeepAlive)
+
+	// Email templates defaults.
+	viper.SetDefault("email.template.verification", defaultEmailTemplateVerification)
+	viper.SetDefault("email.template.loggedIn", defaultEmailTemplateLoggedIn)
+	viper.SetDefault("email.template.register", defaultEmailTemplateRegister)
+
 }
