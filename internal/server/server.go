@@ -21,6 +21,7 @@ import (
 	"net"
 
 	"github.com/durudex/durudex-email-service/internal/config"
+	"github.com/durudex/durudex-email-service/internal/delivery/grpc"
 
 	"github.com/rs/zerolog/log"
 )
@@ -29,10 +30,11 @@ import (
 type Server struct {
 	listener *net.Listener
 	grpc     *GRPCServer
+	handler  *grpc.Handler
 }
 
 // Creating a new server.
-func NewServer(cfg *config.Config) (*Server, error) {
+func NewServer(cfg *config.Config, handler *grpc.Handler) (*Server, error) {
 	// Server address.
 	address := cfg.Server.Host + ":" + cfg.Server.Port
 
@@ -51,12 +53,16 @@ func NewServer(cfg *config.Config) (*Server, error) {
 	return &Server{
 		listener: &lis,
 		grpc:     grpcServer,
+		handler:  handler,
 	}, nil
 }
 
 // Running the server.
 func (s *Server) Run() {
 	log.Debug().Msg("Running gRPC server...")
+
+	// Register gRPC handlers.
+	s.handler.RegisterHandlers(s.grpc.Server)
 
 	// Running gRPC server.
 	if err := s.grpc.Server.Serve(*s.listener); err != nil {

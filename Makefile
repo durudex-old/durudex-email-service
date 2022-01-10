@@ -29,4 +29,20 @@ run: download
 lint:
 	golangci-lint run
 
+.PHONY: protoc
+protoc:
+	protoc \
+		--go_out=. \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=. \
+		--go-grpc_opt=paths=source_relative \
+		internal/delivery/grpc/pb/*.proto
+
+.PHONY: protoc-types
+protoc-types:
+	protoc \
+		--go_out=. \
+		--go_opt=paths=source_relative \
+		internal/delivery/grpc/pb/types/*.proto
+
 .DEFAULT_GOAL := run
