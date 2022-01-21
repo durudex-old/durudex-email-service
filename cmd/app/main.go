@@ -20,7 +20,7 @@ package main
 import (
 	"flag"
 
-	"github.com/durudex/durudex-email-service/internal/emailservice"
+	"github.com/durudex/durudex-email-service/internal/app"
 )
 
 var configPath string // Path to config file.
@@ -37,5 +37,5 @@ func init() {
 // The main function that is called when running the application.
 func main() {
 	// Running a this application.
-	emailservice.Run(configPath)
+	app.Run(configPath)
 }

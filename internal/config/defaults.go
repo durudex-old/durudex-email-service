@@ -21,7 +21,7 @@ import "time"
 
 const (
 	// Server defaults.
-	defaultServerHost = "emailservice.durudex.local"
+	defaultServerHost = "email-service.durudex.local"
 	defaultServerPort = "8002"
 	defaultServerTLS  = true
 

@@ -15,7 +15,7 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package emailservice
+package app
 
 import (
 	"os"
@@ -65,6 +65,8 @@ func Run(configPath string) {
 
 	// Stoping server.
 	srv.Stop()
+
+	log.Info().Msg("Durudex Email Service stoping!")
 }
 
 // Creating a new email client.

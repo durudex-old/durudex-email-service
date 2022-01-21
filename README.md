@@ -39,12 +39,12 @@ create SMTP server with address: `smtp.durudex.local:25`.
 Use `make run` to run and `make build` to build project.
 
 ## 👍 Contribute
-If you want to say thank you and/or support the active development of [Durudex](https://github.com/Durudex):
-1) Add a [GitHub Star](https://github.com/Durudex/durudex-notif-service/stargazers) to the project.
+If you want to say thank you and/or support the active development of [Durudex](https://github.com/durudex):
+1) Add a [GitHub Star](https://github.com/durudex/durudex-notif-service/stargazers) to the project.
 2) Join the [Discord Server](https://discord.gg/4qcXbeVehZ).
 
 ## ⚠️ License
-Copyright © 2021-2022 [Durudex](https://github.com/Durudex). Released under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) license.
+Copyright © 2021-2022 [Durudex](https://github.com/durudex). Released under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) license.
 
 #### Third-party library licenses
 + [grpc-go](https://github.com/grpc/grpc-go/blob/master/LICENSE)

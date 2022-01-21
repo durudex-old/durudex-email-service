@@ -19,11 +19,11 @@ download:
 
 .PHONY: build
 build: download
-	go build -o .bin/email-service.exe ./cmd/emailservice/main.go
+	go build -o .bin/email-service.exe ./cmd/app/main.go
 
 .PHONY: run
 run: download
-	go run ./cmd/emailservice/main.go
+	go run ./cmd/app/main.go
 
 .PHONY: lint
 lint:

@@ -14,20 +14,20 @@
 # along with Durudex. If not, see <https://www.gnu.org/licenses/>
 
 server:
-  host: emailservice.durudex.local
+  host: email-service.durudex.local
   port: 8002
   tls: true
 
 smtp:
   host: smtp.durudex.local
   port: 25
-  connectTimeout: 10s
-  sendTimeout: 10s
+  connect_timeout: 10s
+  send_timeout: 10s
   helo: durudex
-  keepAlive: true
+  keep_alive: true
 
 email:
   template:
     verification: ./web/template/verification.html
-    loggedIn: ./web/template/logged_in.html
+    logged_in: ./web/template/logged_in.html
     register: ./web/template/register.html
