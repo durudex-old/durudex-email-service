@@ -21,13 +21,13 @@ server:
 smtp:
   host: smtp.durudex.local
   port: 25
-  connect_timeout: 10s
-  send_timeout: 10s
+  connect-timeout: 10s
+  send-timeout: 10s
   helo: durudex
-  keep_alive: true
+  keep-alive: true
 
 email:
   template:
     verification: ./web/template/verification.html
-    logged_in: ./web/template/logged_in.html
+    logged-in: ./web/template/logged_in.html
     register: ./web/template/register.html

@@ -20,47 +20,110 @@ package email
 import "testing"
 
 // Testing generating body from html templates.
-func TestGenerateBodyFromHTML(t *testing.T) {
-	// Creating a new message.
-	msg := SendEmailInput{To: "example@example.com", Subject: "Test Message"}
+func TestSendEmailInput_GenerateBodyFromHTML(t *testing.T) {
+	// Testing body input.
+	type bodyInput struct{ Name string }
 
-	// Test email message input.
-	type TestEmailInput struct{ Name string }
-
-	// Create html template input.
-	templateInput := TestEmailInput{Name: "World"}
-
-	// Generate email html template.
-	err := msg.GenerateBodyFromHTML("./fixtures/hello_world.html", templateInput)
-	if err != nil {
-		t.Errorf("error generating body from html: %s", err.Error())
+	// Testing args.
+	type args struct {
+		path    string
+		email   string
+		subject string
+		data    bodyInput
 	}
 
-	// Check is empty.
-	if msg.Body == "" {
-		t.Error("error loading body is empty!")
+	// Tests structures.
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "OK",
+			args: args{
+				path:    "./fixtures/hello_world.html",
+				email:   "example@example.example",
+				subject: "Test Message",
+				data:    bodyInput{Name: "World"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "File not found",
+			args: args{
+				path:    "./fixtures/not_found.html",
+				email:   "example@example.example",
+				subject: "Test Message",
+				data:    bodyInput{},
+			},
+			wantErr: true,
+		},
+	}
+
+	// Conducting tests in various structures.
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create a new message.
+			msg := SendEmailInput{To: tt.args.email, Subject: tt.args.subject}
+
+			// Generating body from html templates.
+			err := msg.GenerateBodyFromHTML(tt.args.path, tt.args.data)
+			if (err != nil) != tt.wantErr {
+				t.Error("error status are not similar")
+			}
+		})
 	}
 }
 
 // Testing validation email input.
-func TestValidate(t *testing.T) {
-	// Creating a new message.
-	msg := SendEmailInput{To: "example@example.com", Subject: "Test Message"}
-
-	// Test email message input.
-	type TestEmailInput struct{ Name string }
-
-	// Create html template input.
-	templateInput := TestEmailInput{Name: "World"}
-
-	// Generate email html template.
-	err := msg.GenerateBodyFromHTML("./fixtures/hello_world.html", templateInput)
-	if err != nil {
-		t.Errorf("error generating body from html: %s", err.Error())
+func TestSendEmailInput_Validate(t *testing.T) {
+	// Testing args.
+	type args struct {
+		email   string
+		subject string
+		body    string
 	}
 
-	// Validation email input.
-	if err := msg.Validate(); err != nil {
-		t.Errorf("error validating input: %s", err.Error())
+	// Tests structures.
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "OK",
+			args: args{
+				email:   "example@example.example",
+				subject: "Test Message",
+				body:    "<h1>Hello World</h1>",
+			},
+			wantErr: false,
+		},
+		{
+			name: "Email and body not correct",
+			args: args{
+				email:   "example.example",
+				subject: "Test Message",
+				body:    "",
+			},
+			wantErr: true,
+		},
+	}
+
+	// Conducting tests in various structures.
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create a new message.
+			msg := SendEmailInput{To: tt.args.email, Subject: tt.args.subject}
+
+			// Set body for args.
+			msg.Body = tt.args.body
+
+			// Validation email input.
+			err := msg.Validate()
+			if (err != nil) != tt.wantErr {
+				t.Error("error status are not similar")
+			}
+		})
 	}
 }

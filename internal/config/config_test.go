@@ -24,7 +24,7 @@ import (
 )
 
 // Testing initialize config.
-func TestInit(t *testing.T) {
+func TestConfig_Init(t *testing.T) {
 	// Environment configurations.
 	type env struct {
 		smtpUsername string
@@ -51,7 +51,7 @@ func TestInit(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "test config",
+			name: "OK",
 			args: args{
 				path: "fixtures/main",
 				env: env{

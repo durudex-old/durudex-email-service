@@ -45,10 +45,10 @@ type (
 	SMTPConfig struct {
 		Host           string        `mapstructure:"host"`
 		Port           int           `mapstructure:"port"`
-		ConnectTimeout time.Duration `mapstructure:"connect_timeout"`
-		SendTimeout    time.Duration `mapstructure:"send_timeout"`
+		ConnectTimeout time.Duration `mapstructure:"connect-timeout"`
+		SendTimeout    time.Duration `mapstructure:"send-timeout"`
 		Helo           string        `mapstructure:"helo"`
-		KeepAlive      bool          `mapstructure:"keep_alive"`
+		KeepAlive      bool          `mapstructure:"keep-alive"`
 		Username       string
 		Password       string
 	}
@@ -61,7 +61,7 @@ type (
 	// Email templates config variables.
 	EmailTemplate struct {
 		Verification string `mapstructure:"verification"`
-		LoggedIn     string `mapstructure:"logged_in"`
+		LoggedIn     string `mapstructure:"logged-in"`
 		Register     string `mapstructure:"register"`
 	}
 )
@@ -142,14 +142,14 @@ func populateDefaults() {
 	// SMTP defaults.
 	viper.SetDefault("smtp.host", defaultSMTPHost)
 	viper.SetDefault("smtp.port", defaultSMTPPort)
-	viper.SetDefault("smtp.connect_timeout", defaultSMTPConnectTimeout)
-	viper.SetDefault("smtp.send_timeout", defaultSMTPSendTimeout)
+	viper.SetDefault("smtp.connect-timeout", defaultSMTPConnectTimeout)
+	viper.SetDefault("smtp.send-timeout", defaultSMTPSendTimeout)
 	viper.SetDefault("smtp.helo", defaultSMTPHelo)
-	viper.SetDefault("smtp.keep_alive", defaultSMTPKeepAlive)
+	viper.SetDefault("smtp.keep-alive", defaultSMTPKeepAlive)
 
 	// Email templates defaults.
 	viper.SetDefault("email.template.verification", defaultEmailTemplateVerification)
-	viper.SetDefault("email.template.logged_in", defaultEmailTemplateLoggedIn)
+	viper.SetDefault("email.template.logged-in", defaultEmailTemplateLoggedIn)
 	viper.SetDefault("email.template.register", defaultEmailTemplateRegister)
 
 }

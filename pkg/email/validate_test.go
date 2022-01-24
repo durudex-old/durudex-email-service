@@ -20,18 +20,38 @@ package email
 import "testing"
 
 // Testing checking email length and characters.
-func TestIsEmailValid(t *testing.T) {
-	var (
-		valid   = "example@example.com"
-		unvalid = "example"
-	)
+func TestValidate_IsEmailValid(t *testing.T) {
+	// Testing args.
+	type args struct{ email string }
 
-	// Check valid email.
-	if val := IsEmailValid(valid); val != true {
-		t.Error("error checking valid email")
+	// Tests structures.
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "OK",
+			args: args{email: "example@example.example"},
+			want: true,
+		},
+		{
+			name: "Not correct email",
+			args: args{email: "example.example"},
+			want: false,
+		},
 	}
-	// Check unvalid email.
-	if val := IsEmailValid(unvalid); val != false {
-		t.Error("error ckecking unvalid email")
+
+	// Conducting tests in various structures.
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Check email length and characters.
+			got := IsEmailValid(tt.args.email)
+
+			// Check status.
+			if got != tt.want {
+				t.Error("error status are not similar")
+			}
+		})
 	}
 }
