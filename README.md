@@ -21,6 +21,7 @@ Service for sending email messages.
 
 ### 💡 Prerequisites
 + [Go 1.17](https://golang.org/)
++ [Docker](https://www.docker.com)
 + [golangci-lint](https://golangci-lint.run/usage/install/)
 + [grpc](https://grpc.io/docs/languages/go/quickstart/)
 

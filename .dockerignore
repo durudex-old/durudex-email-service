@@ -1,4 +1,4 @@
-# Copyright © 2021-2022 Durudex
+# Copyright © 2022 Durudex
 
 # This file is part of Durudex: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -13,36 +13,4 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Durudex. If not, see <https://www.gnu.org/licenses/>.
 
-.PHONY: build
-build:
-	go mod download && CGO_ENABLE=0 GOOS=linux go build -o ./.bin/app ./cmd/app/main.go
-
-.PHONY: run
-run: build
-	docker-compose up --remove-orphans app
-
-.PHONY: lint
-lint:
-	golangci-lint run
-
-.PHONY: test
-test: lint
-	go test -v ./...
-
-.PHONY: protoc
-protoc:
-	protoc \
-		--go_out=. \
-		--go_opt=paths=source_relative \
-		--go-grpc_out=. \
-		--go-grpc_opt=paths=source_relative \
-		internal/delivery/grpc/pb/*.proto
-
-.PHONY: protoc-types
-protoc-types:
-	protoc \
-		--go_out=. \
-		--go_opt=paths=source_relative \
-		internal/delivery/grpc/pb/types/*.proto
-
-.DEFAULT_GOAL := run
+README.md
