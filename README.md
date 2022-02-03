@@ -26,7 +26,7 @@ Service for sending email messages.
 + [grpc](https://grpc.io/docs/languages/go/quickstart/)
 
 ## ⚙️ Build & Run
-1) Add variables from `.env.example` to your environment variables:
+1) Create an `.env` file in the root directory and add the following values from `.env.example`:
 ```sh
 # Email username.
 SMTP_USERNAME=
