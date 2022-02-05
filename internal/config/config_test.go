@@ -27,20 +27,19 @@ import (
 func TestConfig_Init(t *testing.T) {
 	// Environment configurations.
 	type env struct {
+		configPath   string
 		smtpUsername string
 		smtpPassword string
 	}
 
 	// Testing args.
-	type args struct {
-		path string
-		env  env
-	}
+	type args struct{ env env }
 
 	// Set environment configuration.
 	setEnv := func(env env) {
-		os.Setenv("SMTP_USERNAME", env.smtpUsername)
-		os.Setenv("SMTP_PASSWORD", env.smtpPassword)
+		os.Setenv("CONFIG_PATH", env.configPath)
+		os.Setenv("EMAIL_USERNAME", env.smtpUsername)
+		os.Setenv("EMAIL_PASSWORD", env.smtpPassword)
 	}
 
 	// Tests structures.
@@ -53,8 +52,8 @@ func TestConfig_Init(t *testing.T) {
 		{
 			name: "OK",
 			args: args{
-				path: "fixtures/main",
 				env: env{
+					configPath:   "fixtures/main",
 					smtpUsername: "user",
 					smtpPassword: "1234567890",
 				},
@@ -93,7 +92,7 @@ func TestConfig_Init(t *testing.T) {
 			setEnv(tt.args.env)
 
 			// Initialize config.
-			got, err := Init(tt.args.path)
+			got, err := Init()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error initialize config: %s", err.Error())
 			}

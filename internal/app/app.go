@@ -32,9 +32,9 @@ import (
 )
 
 // A function that running the application.
-func Run(configPath string) {
+func Run() {
 	// Initialize config.
-	cfg, err := config.Init(configPath)
+	cfg, err := config.Init()
 	if err != nil {
 		log.Error().Msgf("error initialize config: %s", err.Error())
 	}

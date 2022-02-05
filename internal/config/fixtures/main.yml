@@ -19,7 +19,7 @@ server:
   tls: true
 
 smtp:
-  host: smtp.durudex.local
+  host: email.durudex.local
   port: 25
   connect-timeout: 10s
   send-timeout: 10s

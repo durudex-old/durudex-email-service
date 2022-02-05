@@ -28,13 +28,15 @@ Service for sending email messages.
 ## ⚙️ Build & Run
 1) Create an `.env` file in the root directory and add the following values from `.env.example`:
 ```sh
-# Email username.
-SMTP_USERNAME=
-# Email password.
-SMTP_PASSWORD=
+# Config variables.
+CONFIG_PATH=configs/main
+
+# Email config variables.
+EMAIL_USERNAME=
+EMAIL_PASSWORD=
 ```
 2) If you use a default `smtp.host` and `smtp.port` configuration,
-create SMTP server with address: `smtp.durudex.local:25`.
+create SMTP server with address: `email.durudex.local:25`.
 3) Generate certificates, information can be found at [certs/README.md](certs/README.md)
 
 Use `make run` to run and `make build` to build project.

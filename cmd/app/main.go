@@ -17,25 +17,10 @@
 
 package main
 
-import (
-	"flag"
-
-	"github.com/durudex/durudex-email-service/internal/app"
-)
-
-var configPath string // Path to config file.
-
-// A function that is called before the main function.
-func init() {
-	// Add a new flag for the path to config.
-	flag.StringVar(&configPath, "config", "configs/main", "Path to config file.")
-
-	// Parsing all the flags that were specified at startup.
-	flag.Parse()
-}
+import "github.com/durudex/durudex-email-service/internal/app"
 
 // The main function that is called when running the application.
 func main() {
 	// Running a this application.
-	app.Run(configPath)
+	app.Run()
 }

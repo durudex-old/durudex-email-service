@@ -20,21 +20,24 @@ package config
 import "time"
 
 const (
+	// Config defaults.
+	defaultConfigPath string = "configs/main"
+
 	// Server defaults.
-	defaultServerHost = "email-service.durudex.local"
-	defaultServerPort = "8002"
-	defaultServerTLS  = true
+	defaultServerHost string = "email-service.durudex.local"
+	defaultServerPort string = "8002"
+	defaultServerTLS  bool   = true
 
 	// SMTP defaults.
-	defaultSMTPHost           = "smtp.durudex.local"
-	defaultSMTPPort           = 25
-	defaultSMTPConnectTimeout = time.Second * 10
-	defaultSMTPSendTimeout    = time.Second * 10
-	defaultSMTPHelo           = "durudex"
-	defaultSMTPKeepAlive      = true
+	defaultSMTPHost           string        = "email.durudex.local"
+	defaultSMTPPort           int           = 25
+	defaultSMTPConnectTimeout time.Duration = time.Second * 10
+	defaultSMTPSendTimeout    time.Duration = time.Second * 10
+	defaultSMTPHelo           string        = "durudex"
+	defaultSMTPKeepAlive      bool          = true
 
 	// Email templates defaults.
-	defaultEmailTemplateVerification = "./web/template/verification.html"
-	defaultEmailTemplateLoggedIn     = "./web/template/logged_in.html"
-	defaultEmailTemplateRegister     = "./web/template/register.html"
+	defaultEmailTemplateVerification string = "./web/template/verification.html"
+	defaultEmailTemplateLoggedIn     string = "./web/template/logged_in.html"
+	defaultEmailTemplateRegister     string = "./web/template/register.html"
 )

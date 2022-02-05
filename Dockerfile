@@ -17,4 +17,4 @@ FROM alpine:latest
 
 WORKDIR /root/
 
-CMD ["./app", "configs/main"]
+ENTRYPOINT ["./app"]

@@ -26,7 +26,7 @@ services:
       - 8002:8002
     volumes:
       - ./.bin/:/root/
-      - ./certs/:/root/
+      - ./certs/:/root/certs/
       - ./configs/:/root/configs/
       - ./web/template/:/root/web/template/
     env_file:
