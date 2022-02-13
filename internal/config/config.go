@@ -19,6 +19,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -43,12 +44,12 @@ type (
 
 	// SMTP config variables.
 	SMTPConfig struct {
-		Host           string        `mapstructure:"host"`
-		Port           int           `mapstructure:"port"`
 		ConnectTimeout time.Duration `mapstructure:"connect-timeout"`
 		SendTimeout    time.Duration `mapstructure:"send-timeout"`
 		Helo           string        `mapstructure:"helo"`
 		KeepAlive      bool          `mapstructure:"keep-alive"`
+		Host           string
+		Port           int
 		Username       string
 		Password       string
 	}
@@ -86,7 +87,9 @@ func Init() (*Config, error) {
 	}
 
 	// Set configurations from environment.
-	setFromEnv(&cfg)
+	if err := setFromEnv(&cfg); err != nil {
+		return nil, err
+	}
 
 	return &cfg, nil
 }
@@ -130,12 +133,24 @@ func unmarshal(cfg *Config) error {
 }
 
 // Set configurations from environment.
-func setFromEnv(cfg *Config) {
+func setFromEnv(cfg *Config) error {
 	log.Debug().Msg("Set configurations from environment...")
+
+	// Get smtp port from environments.
+	smtpPort, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
+	if err != nil {
+		return err
+	}
+
+	// SMTP configurations.
+	cfg.SMTP.Host = os.Getenv("SMTP_HOST")
+	cfg.SMTP.Port = smtpPort
 
 	// Email configurations.
 	cfg.SMTP.Username = os.Getenv("EMAIL_USERNAME")
 	cfg.SMTP.Password = os.Getenv("EMAIL_PASSWORD")
+
+	return nil
 }
 
 // Populate defaults config variables.
@@ -148,8 +163,6 @@ func populateDefaults() {
 	viper.SetDefault("server.tls", defaultServerTLS)
 
 	// SMTP defaults.
-	viper.SetDefault("smtp.host", defaultSMTPHost)
-	viper.SetDefault("smtp.port", defaultSMTPPort)
 	viper.SetDefault("smtp.connect-timeout", defaultSMTPConnectTimeout)
 	viper.SetDefault("smtp.send-timeout", defaultSMTPSendTimeout)
 	viper.SetDefault("smtp.helo", defaultSMTPHelo)

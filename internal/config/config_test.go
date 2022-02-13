@@ -27,9 +27,11 @@ import (
 func TestConfig_Init(t *testing.T) {
 	// Environment configurations.
 	type env struct {
-		configPath   string
-		smtpUsername string
-		smtpPassword string
+		configPath    string
+		smtpHost      string
+		smtpPort      string
+		emailUsername string
+		emailPassword string
 	}
 
 	// Testing args.
@@ -38,8 +40,10 @@ func TestConfig_Init(t *testing.T) {
 	// Set environment configuration.
 	setEnv := func(env env) {
 		os.Setenv("CONFIG_PATH", env.configPath)
-		os.Setenv("EMAIL_USERNAME", env.smtpUsername)
-		os.Setenv("EMAIL_PASSWORD", env.smtpPassword)
+		os.Setenv("SMTP_HOST", env.smtpHost)
+		os.Setenv("SMTP_PORT", env.smtpPort)
+		os.Setenv("EMAIL_USERNAME", env.emailUsername)
+		os.Setenv("EMAIL_PASSWORD", env.emailPassword)
 	}
 
 	// Tests structures.
@@ -53,9 +57,11 @@ func TestConfig_Init(t *testing.T) {
 			name: "OK",
 			args: args{
 				env: env{
-					configPath:   "fixtures/main",
-					smtpUsername: "user",
-					smtpPassword: "1234567890",
+					configPath:    "fixtures/main",
+					smtpHost:      "mail.durudex.local",
+					smtpPort:      "25",
+					emailUsername: "user",
+					emailPassword: "1234567890",
 				},
 			},
 			want: &Config{
@@ -65,12 +71,12 @@ func TestConfig_Init(t *testing.T) {
 					TLS:  defaultServerTLS,
 				},
 				SMTP: SMTPConfig{
-					Host:           defaultSMTPHost,
-					Port:           defaultSMTPPort,
 					ConnectTimeout: defaultSMTPConnectTimeout,
 					SendTimeout:    defaultSMTPSendTimeout,
 					Helo:           defaultSMTPHelo,
 					KeepAlive:      defaultSMTPKeepAlive,
+					Host:           "mail.durudex.local",
+					Port:           25,
 					Username:       "user",
 					Password:       "1234567890",
 				},

@@ -24,13 +24,11 @@ const (
 	defaultConfigPath string = "configs/main"
 
 	// Server defaults.
-	defaultServerHost string = "email-service.durudex.local"
+	defaultServerHost string = "email.service.durudex.local"
 	defaultServerPort string = "8002"
 	defaultServerTLS  bool   = true
 
 	// SMTP defaults.
-	defaultSMTPHost           string        = "email.durudex.local"
-	defaultSMTPPort           int           = 25
 	defaultSMTPConnectTimeout time.Duration = time.Second * 10
 	defaultSMTPSendTimeout    time.Duration = time.Second * 10
 	defaultSMTPHelo           string        = "durudex"
