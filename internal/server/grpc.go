@@ -30,8 +30,8 @@ import (
 // Certificates paths.
 const (
 	CACertFile           string = "certs/rootCA.pem"
-	emailserviceCertFile string = "certs/email-service-cert.pem"
-	emailserviceKeyFile  string = "certs/email-service-key.pem"
+	emailserviceCertFile string = "certs/email.service-cert.pem"
+	emailserviceKeyFile  string = "certs/email.service-key.pem"
 )
 
 // Main structure of gRPC sever.

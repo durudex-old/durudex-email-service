@@ -11,31 +11,21 @@
 # GNU Affero General Public License for more details.
 
 # You should have received a copy of the GNU Affero General Public License
-# along with Durudex. If not, see <https://www.gnu.org/licenses/>.
+# along with Durudex. If not, see <https://www.gnu.org/licenses/>
 
-version: '3.8'
+server:
+  host: email.service.durudex.local
+  port: 8002
+  tls: false
 
-services:
-  app:
-    image: durudex-email-service
-    container_name: durudex-email-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-    hostname: email.service.durudex.local
-    ports:
-      - 8002:8002
-    volumes:
-      - ./.bin/:/root/
-      - ./certs/:/root/certs/
-      - ./configs/:/root/configs/
-      - ./web/template/:/root/web/template/
-    env_file:
-      - .env
-    networks:
-      - durudex-backend
+smtp:
+  connect-timeout: 10s
+  send-timeout: 10s
+  helo: durudex
+  keep-alive: true
 
-networks:
-  durudex-backend:
-    driver: bridge
-    name: durudex-backend
+email:
+  template:
+    verification: ./web/template/verification.html
+    logged-in: ./web/template/logged_in.html
+    register: ./web/template/register.html
