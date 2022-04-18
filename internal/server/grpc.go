@@ -27,11 +27,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Main structure of gRPC sever.
-type GRPCServer struct{ Server *grpc.Server }
+// gRPC server structure.
+type gRPCServer struct{ Server *grpc.Server }
 
 // Creating a new gRPC server.
-func NewGRPCServer(cfg *config.TLSConfig) (*GRPCServer, error) {
+func NewGRPC(cfg *config.TLSConfig) (*gRPCServer, error) {
 	serverOptions := []grpc.ServerOption{}
 
 	if cfg.Enable {
@@ -49,10 +49,10 @@ func NewGRPCServer(cfg *config.TLSConfig) (*GRPCServer, error) {
 		)
 	}
 
-	return &GRPCServer{Server: grpc.NewServer(serverOptions...)}, nil
+	return &gRPCServer{Server: grpc.NewServer(serverOptions...)}, nil
 }
 
-// Unary gRPC interveptor.
+// Unary gRPC interceptor.
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	log.Info().Msgf("unary interceptor: %s", info.FullMethod)
 

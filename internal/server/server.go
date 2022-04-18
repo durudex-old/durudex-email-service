@@ -28,8 +28,8 @@ import (
 
 // The main structure of the server.
 type Server struct {
-	listener *net.Listener
-	grpc     *GRPCServer
+	listener net.Listener
+	grpc     *gRPCServer
 	handler  *grpc.Handler
 }
 
@@ -45,16 +45,12 @@ func NewServer(cfg *config.Config, handler *grpc.Handler) (*Server, error) {
 	}
 
 	// Creating a new gRPC server.
-	grpcServer, err := NewGRPCServer(&cfg.Server.TLS)
+	grpcServer, err := NewGRPC(&cfg.Server.TLS)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Server{
-		listener: &lis,
-		grpc:     grpcServer,
-		handler:  handler,
-	}, nil
+	return &Server{listener: lis, grpc: grpcServer, handler: handler}, nil
 }
 
 // Running the server.
@@ -65,8 +61,8 @@ func (s *Server) Run() {
 	s.handler.RegisterHandlers(s.grpc.Server)
 
 	// Running gRPC server.
-	if err := s.grpc.Server.Serve(*s.listener); err != nil {
-		log.Fatal().Msgf("error running gRPC server: %s", err.Error())
+	if err := s.grpc.Server.Serve(s.listener); err != nil {
+		log.Fatal().Err(err).Msg("error running gRPC server")
 	}
 }
 

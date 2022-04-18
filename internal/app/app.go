@@ -28,21 +28,38 @@ import (
 	"github.com/durudex/durudex-email-service/internal/service"
 	"github.com/durudex/durudex-email-service/pkg/email"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 // A function that running the application.
 func Run() {
+	// Set logger mode.
+	if os.Getenv("DEBUG") == "true" {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+
 	// Initialize config.
 	cfg, err := config.Init()
 	if err != nil {
-		log.Error().Msgf("error initialize config: %s", err.Error())
+		log.Error().Err(err).Msg("error initialize config")
 	}
 
 	// Create a new email client.
-	emailClient, err := createEmailClient(cfg.SMTP)
+	emailClient, err := email.NewClient(&email.SMTPConfig{
+		Host:           cfg.SMTP.Host,
+		Port:           cfg.SMTP.Port,
+		Username:       cfg.SMTP.Username,
+		Password:       cfg.SMTP.Password,
+		ConnectTimeout: cfg.SMTP.ConnectTimeout,
+		SendTimeout:    cfg.SMTP.SendTimeout,
+		Helo:           cfg.SMTP.Helo,
+		KeepAlive:      cfg.SMTP.KeepAlive,
+	})
 	if err != nil {
-		log.Error().Msgf("error creating email client: %s", err.Error())
+		log.Error().Err(err).Msg("error creating email client")
 	}
 
 	// Creating a new service and handlers.
@@ -52,7 +69,7 @@ func Run() {
 	// Creating a new server.
 	srv, err := server.NewServer(cfg, grpcHandler)
 	if err != nil {
-		log.Fatal().Msgf("error creating a new server: %s", err.Error())
+		log.Fatal().Err(err).Msg("error creating a new server")
 	}
 
 	// Run server.
@@ -67,18 +84,4 @@ func Run() {
 	srv.Stop()
 
 	log.Info().Msg("Durudex Email Service stoping!")
-}
-
-// Creating a new email client.
-func createEmailClient(cfg config.SMTPConfig) (*email.Client, error) {
-	return email.NewClient(&email.SMTPConfig{
-		Host:           cfg.Host,
-		Port:           cfg.Port,
-		Username:       cfg.Username,
-		Password:       cfg.Password,
-		ConnectTimeout: cfg.ConnectTimeout,
-		SendTimeout:    cfg.SendTimeout,
-		Helo:           cfg.Helo,
-		KeepAlive:      cfg.KeepAlive,
-	})
 }
