@@ -26,12 +26,11 @@ Service for sending email messages.
 + [grpc](https://grpc.io/docs/languages/go/quickstart/)
 
 ## ⚙️ Build & Run
-1) Add local domains:
+1) Create an `.env` file in the root directory and add the following values from `.env.example`:
 ```sh
-email.service.durudex.local
-```
-2) Create an `.env` file in the root directory and add the following values from `.env.example`:
-```sh
+# Debug mode.
+DEBUG=false
+
 # Config variables:
 CONFIG_PATH=configs/main
 
@@ -43,7 +42,7 @@ SMTP_PORT=
 EMAIL_USERNAME=
 EMAIL_PASSWORD=
 ```
-3) Generate certificates, information can be found at [certs/README.md](certs/README.md)
+2) Generate certificates, information can be found at [certs/README.md](certs/README.md)
 
 Use `make run` to run and `make build` to build project.
 
