@@ -19,8 +19,8 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -37,9 +37,17 @@ type (
 
 	// Server config variables.
 	ServerConfig struct {
-		Host string `mapstructure:"host"`
-		Port string `mapstructure:"port"`
-		TLS  bool   `mapstructure:"tls"`
+		Host string    `mapstructure:"host"`
+		Port string    `mapstructure:"port"`
+		TLS  TLSConfig `mapstructure:"tls"`
+	}
+
+	// TLS config variables.
+	TLSConfig struct {
+		Enable bool   `mapstructure:"enable"`
+		CACert string `mapstructure:"ca-cert"`
+		Cert   string `mapstructure:"cert"`
+		Key    string `mapstructure:"key"`
 	}
 
 	// SMTP config variables.
@@ -56,7 +64,7 @@ type (
 
 	// Email config variables.
 	EmailConfig struct {
-		Template EmailTemplate
+		Template EmailTemplate `mapstructure:"template"`
 	}
 
 	// Email templates config variables.
@@ -106,11 +114,11 @@ func parseConfigFile() error {
 
 	log.Debug().Msgf("Parsing config file: %s", configPath)
 
-	// Split path to folder and file.
-	path := strings.Split(configPath, "/")
+	// Split path to dir and file.
+	dir, file := filepath.Split(configPath)
 
-	viper.AddConfigPath(path[0]) // Folder.
-	viper.SetConfigName(path[1]) // File.
+	viper.AddConfigPath(dir)
+	viper.SetConfigName(file)
 
 	// Read in config file.
 	return viper.ReadInConfig()
@@ -125,7 +133,7 @@ func unmarshal(cfg *Config) error {
 		return err
 	}
 	// Unmarshal email template keys.
-	if err := viper.UnmarshalKey("email.template", &cfg.Email.Template); err != nil {
+	if err := viper.UnmarshalKey("email", &cfg.Email); err != nil {
 		return err
 	}
 	// Unmarshal server keys.
@@ -160,7 +168,12 @@ func populateDefaults() {
 	// Server defaults.
 	viper.SetDefault("server.host", defaultServerHost)
 	viper.SetDefault("server.port", defaultServerPort)
-	viper.SetDefault("server.tls", defaultServerTLS)
+
+	// TLS defaults.
+	viper.SetDefault("server.tls.enable", defaultTLSEnable)
+	viper.SetDefault("server.tls.ca-cert", defaultTLSCACert)
+	viper.SetDefault("server.tls.cert", defaultTLSCert)
+	viper.SetDefault("server.tls.key", defaultTLSKey)
 
 	// SMTP defaults.
 	viper.SetDefault("smtp.connect-timeout", defaultSMTPConnectTimeout)

@@ -45,7 +45,7 @@ func NewServer(cfg *config.Config, handler *grpc.Handler) (*Server, error) {
 	}
 
 	// Creating a new gRPC server.
-	grpcServer, err := NewGRPCServer(cfg)
+	grpcServer, err := NewGRPCServer(&cfg.Server.TLS)
 	if err != nil {
 		return nil, err
 	}

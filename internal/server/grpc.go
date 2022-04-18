@@ -27,26 +27,16 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Certificates paths.
-const (
-	CACertFile           string = "certs/rootCA.pem"
-	emailserviceCertFile string = "certs/email.service-cert.pem"
-	emailserviceKeyFile  string = "certs/email.service-key.pem"
-)
-
 // Main structure of gRPC sever.
-type GRPCServer struct {
-	Server *grpc.Server
-}
+type GRPCServer struct{ Server *grpc.Server }
 
 // Creating a new gRPC server.
-func NewGRPCServer(cfg *config.Config) (*GRPCServer, error) {
+func NewGRPCServer(cfg *config.TLSConfig) (*GRPCServer, error) {
 	serverOptions := []grpc.ServerOption{}
 
-	// If TLS is true.
-	if cfg.Server.TLS {
+	if cfg.Enable {
 		// Loading TLS credentials.
-		credentials, err := tls.LoadTLSCredentials(CACertFile, emailserviceCertFile, emailserviceKeyFile)
+		credentials, err := tls.LoadTLSCredentials(cfg.CACert, cfg.Cert, cfg.Key)
 		if err != nil {
 			return nil, err
 		}

@@ -16,7 +16,11 @@
 server:
   host: email.service.durudex.local
   port: 8002
-  tls: true
+  tls:
+    enable: true
+    ca-cert: ./certs/rootCA.pem
+    cert: ./certs/email.service.durudex.local-cert.pem
+    key: ./certs/email.service.durudex.local-key.pem
 
 smtp:
   connect-timeout: 10s

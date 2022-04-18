@@ -26,7 +26,12 @@ const (
 	// Server defaults.
 	defaultServerHost string = "email.service.durudex.local"
 	defaultServerPort string = "8002"
-	defaultServerTLS  bool   = true
+
+	// TLS defaults.
+	defaultTLSEnable bool   = true
+	defaultTLSCACert string = "./certs/rootCA.pem"
+	defaultTLSCert   string = "./certs/email.service.durudex.local-cert.pem"
+	defaultTLSKey    string = "./certs/email.service.durudex.local-key.pem"
 
 	// SMTP defaults.
 	defaultSMTPConnectTimeout time.Duration = time.Second * 10
