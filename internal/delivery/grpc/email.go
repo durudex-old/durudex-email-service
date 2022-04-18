@@ -40,7 +40,7 @@ func NewEmailHandler(service service.Email) *EmailHandler {
 }
 
 // Send to user email verification code.
-func (h *EmailHandler) UserCode(ctx context.Context, input *pb.UserCodeRequest) (*types.Status, error) {
+func (h *EmailHandler) SendEmailUserCode(ctx context.Context, input *pb.SendEmailUserCodeRequest) (*types.Status, error) {
 	emailStatus, err := h.service.UserCode(input.Email, input.Username, input.Code)
 	if err != nil {
 		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
@@ -50,7 +50,7 @@ func (h *EmailHandler) UserCode(ctx context.Context, input *pb.UserCodeRequest) 
 }
 
 // Send to user email logged in information.
-func (h *EmailHandler) UserLoggedIn(ctx context.Context, input *pb.UserLoggedInRequest) (*types.Status, error) {
+func (h *EmailHandler) SendEmailUserLoggedIn(ctx context.Context, input *pb.SendEmailUserLoggedInRequest) (*types.Status, error) {
 	emailStatus, err := h.service.UserLoggedIn(input.Email, input.Ip)
 	if err != nil {
 		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
@@ -60,11 +60,11 @@ func (h *EmailHandler) UserLoggedIn(ctx context.Context, input *pb.UserLoggedInR
 }
 
 // Send to user email register information.
-func (h *EmailHandler) UserRegister(ctx context.Context, input *pb.UserRegisterRequest) (*types.Status, error) {
+func (h *EmailHandler) SendEmailUserRegister(ctx context.Context, input *pb.SendEmailUserRegisterRequest) (*types.Status, error) {
 	emailStatus, err := h.service.UserRegister(input.Email, input.Username)
 	if err != nil {
 		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.Status{Status: false}, nil
+	return &types.Status{Status: emailStatus}, nil
 }

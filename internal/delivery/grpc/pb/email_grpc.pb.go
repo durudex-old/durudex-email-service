@@ -19,9 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
-	UserCode(ctx context.Context, in *UserCodeRequest, opts ...grpc.CallOption) (*types.Status, error)
-	UserLoggedIn(ctx context.Context, in *UserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error)
-	UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*types.Status, error)
+	SendEmailUserCode(ctx context.Context, in *SendEmailUserCodeRequest, opts ...grpc.CallOption) (*types.Status, error)
+	SendEmailUserLoggedIn(ctx context.Context, in *SendEmailUserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error)
+	SendEmailUserRegister(ctx context.Context, in *SendEmailUserRegisterRequest, opts ...grpc.CallOption) (*types.Status, error)
 }
 
 type emailServiceClient struct {
@@ -32,27 +32,27 @@ func NewEmailServiceClient(cc grpc.ClientConnInterface) EmailServiceClient {
 	return &emailServiceClient{cc}
 }
 
-func (c *emailServiceClient) UserCode(ctx context.Context, in *UserCodeRequest, opts ...grpc.CallOption) (*types.Status, error) {
+func (c *emailServiceClient) SendEmailUserCode(ctx context.Context, in *SendEmailUserCodeRequest, opts ...grpc.CallOption) (*types.Status, error) {
 	out := new(types.Status)
-	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/UserCode", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/SendEmailUserCode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *emailServiceClient) UserLoggedIn(ctx context.Context, in *UserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error) {
+func (c *emailServiceClient) SendEmailUserLoggedIn(ctx context.Context, in *SendEmailUserLoggedInRequest, opts ...grpc.CallOption) (*types.Status, error) {
 	out := new(types.Status)
-	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/UserLoggedIn", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/SendEmailUserLoggedIn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *emailServiceClient) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*types.Status, error) {
+func (c *emailServiceClient) SendEmailUserRegister(ctx context.Context, in *SendEmailUserRegisterRequest, opts ...grpc.CallOption) (*types.Status, error) {
 	out := new(types.Status)
-	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/UserRegister", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/durudex.email.EmailService/SendEmailUserRegister", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,9 +63,9 @@ func (c *emailServiceClient) UserRegister(ctx context.Context, in *UserRegisterR
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility
 type EmailServiceServer interface {
-	UserCode(context.Context, *UserCodeRequest) (*types.Status, error)
-	UserLoggedIn(context.Context, *UserLoggedInRequest) (*types.Status, error)
-	UserRegister(context.Context, *UserRegisterRequest) (*types.Status, error)
+	SendEmailUserCode(context.Context, *SendEmailUserCodeRequest) (*types.Status, error)
+	SendEmailUserLoggedIn(context.Context, *SendEmailUserLoggedInRequest) (*types.Status, error)
+	SendEmailUserRegister(context.Context, *SendEmailUserRegisterRequest) (*types.Status, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -73,14 +73,14 @@ type EmailServiceServer interface {
 type UnimplementedEmailServiceServer struct {
 }
 
-func (UnimplementedEmailServiceServer) UserCode(context.Context, *UserCodeRequest) (*types.Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserCode not implemented")
+func (UnimplementedEmailServiceServer) SendEmailUserCode(context.Context, *SendEmailUserCodeRequest) (*types.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmailUserCode not implemented")
 }
-func (UnimplementedEmailServiceServer) UserLoggedIn(context.Context, *UserLoggedInRequest) (*types.Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserLoggedIn not implemented")
+func (UnimplementedEmailServiceServer) SendEmailUserLoggedIn(context.Context, *SendEmailUserLoggedInRequest) (*types.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmailUserLoggedIn not implemented")
 }
-func (UnimplementedEmailServiceServer) UserRegister(context.Context, *UserRegisterRequest) (*types.Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
+func (UnimplementedEmailServiceServer) SendEmailUserRegister(context.Context, *SendEmailUserRegisterRequest) (*types.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmailUserRegister not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
 
@@ -95,56 +95,56 @@ func RegisterEmailServiceServer(s grpc.ServiceRegistrar, srv EmailServiceServer)
 	s.RegisterService(&EmailService_ServiceDesc, srv)
 }
 
-func _EmailService_UserCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserCodeRequest)
+func _EmailService_SendEmailUserCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendEmailUserCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EmailServiceServer).UserCode(ctx, in)
+		return srv.(EmailServiceServer).SendEmailUserCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/durudex.email.EmailService/UserCode",
+		FullMethod: "/durudex.email.EmailService/SendEmailUserCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).UserCode(ctx, req.(*UserCodeRequest))
+		return srv.(EmailServiceServer).SendEmailUserCode(ctx, req.(*SendEmailUserCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EmailService_UserLoggedIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserLoggedInRequest)
+func _EmailService_SendEmailUserLoggedIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendEmailUserLoggedInRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EmailServiceServer).UserLoggedIn(ctx, in)
+		return srv.(EmailServiceServer).SendEmailUserLoggedIn(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/durudex.email.EmailService/UserLoggedIn",
+		FullMethod: "/durudex.email.EmailService/SendEmailUserLoggedIn",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).UserLoggedIn(ctx, req.(*UserLoggedInRequest))
+		return srv.(EmailServiceServer).SendEmailUserLoggedIn(ctx, req.(*SendEmailUserLoggedInRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EmailService_UserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRegisterRequest)
+func _EmailService_SendEmailUserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendEmailUserRegisterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EmailServiceServer).UserRegister(ctx, in)
+		return srv.(EmailServiceServer).SendEmailUserRegister(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/durudex.email.EmailService/UserRegister",
+		FullMethod: "/durudex.email.EmailService/SendEmailUserRegister",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).UserRegister(ctx, req.(*UserRegisterRequest))
+		return srv.(EmailServiceServer).SendEmailUserRegister(ctx, req.(*SendEmailUserRegisterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -157,16 +157,16 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*EmailServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "UserCode",
-			Handler:    _EmailService_UserCode_Handler,
+			MethodName: "SendEmailUserCode",
+			Handler:    _EmailService_SendEmailUserCode_Handler,
 		},
 		{
-			MethodName: "UserLoggedIn",
-			Handler:    _EmailService_UserLoggedIn_Handler,
+			MethodName: "SendEmailUserLoggedIn",
+			Handler:    _EmailService_SendEmailUserLoggedIn_Handler,
 		},
 		{
-			MethodName: "UserRegister",
-			Handler:    _EmailService_UserRegister_Handler,
+			MethodName: "SendEmailUserRegister",
+			Handler:    _EmailService_SendEmailUserRegister_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

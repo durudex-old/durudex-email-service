@@ -22,23 +22,23 @@ option go_package = "github.com/durudex/durudex-email-service/internal/delivery/
 import "internal/delivery/grpc/pb/types/status.proto";
 
 service EmailService {
-  rpc UserCode(UserCodeRequest) returns (types.Status);
-  rpc UserLoggedIn(UserLoggedInRequest) returns (types.Status);
-  rpc UserRegister(UserRegisterRequest) returns (types.Status);
+  rpc SendEmailUserCode(SendEmailUserCodeRequest) returns (types.Status);
+  rpc SendEmailUserLoggedIn(SendEmailUserLoggedInRequest) returns (types.Status);
+  rpc SendEmailUserRegister(SendEmailUserRegisterRequest) returns (types.Status);
 }
 
-message UserCodeRequest {
+message SendEmailUserCodeRequest {
   string email = 1;
   string username = 2;
   uint64 code = 3;
 }
 
-message UserLoggedInRequest {
+message SendEmailUserLoggedInRequest {
   string email = 1;
   string ip = 2;
 }
 
-message UserRegisterRequest {
+message SendEmailUserRegisterRequest {
   string email = 1;
   string username = 2;
 }
