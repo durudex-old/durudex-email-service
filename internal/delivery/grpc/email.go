@@ -21,7 +21,6 @@ import (
 	"context"
 
 	"github.com/durudex/durudex-email-service/internal/delivery/grpc/pb"
-	"github.com/durudex/durudex-email-service/internal/delivery/grpc/pb/types"
 	"github.com/durudex/durudex-email-service/internal/service"
 
 	"google.golang.org/grpc/codes"
@@ -40,31 +39,31 @@ func NewEmailHandler(service service.Email) *EmailHandler {
 }
 
 // Send to user email verification code.
-func (h *EmailHandler) SendEmailUserCode(ctx context.Context, input *pb.SendEmailUserCodeRequest) (*types.Status, error) {
-	emailStatus, err := h.service.UserCode(input.Email, input.Username, input.Code)
+func (h *EmailHandler) SendEmailUserCode(ctx context.Context, input *pb.SendEmailUserCodeRequest) (*pb.SendEmailUserCodeResponse, error) {
+	err := h.service.UserCode(input.Email, input.Username, input.Code)
 	if err != nil {
-		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
+		return &pb.SendEmailUserCodeResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.Status{Status: emailStatus}, nil
+	return &pb.SendEmailUserCodeResponse{}, nil
 }
 
 // Send to user email logged in information.
-func (h *EmailHandler) SendEmailUserLoggedIn(ctx context.Context, input *pb.SendEmailUserLoggedInRequest) (*types.Status, error) {
-	emailStatus, err := h.service.UserLoggedIn(input.Email, input.Ip)
+func (h *EmailHandler) SendEmailUserLoggedIn(ctx context.Context, input *pb.SendEmailUserLoggedInRequest) (*pb.SendEmailUserLoggedInResponse, error) {
+	err := h.service.UserLoggedIn(input.Email, input.Ip)
 	if err != nil {
-		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
+		return &pb.SendEmailUserLoggedInResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.Status{Status: emailStatus}, nil
+	return &pb.SendEmailUserLoggedInResponse{}, nil
 }
 
 // Send to user email register information.
-func (h *EmailHandler) SendEmailUserRegister(ctx context.Context, input *pb.SendEmailUserRegisterRequest) (*types.Status, error) {
-	emailStatus, err := h.service.UserRegister(input.Email, input.Username)
+func (h *EmailHandler) SendEmailUserRegister(ctx context.Context, input *pb.SendEmailUserRegisterRequest) (*pb.SendEmailUserRegisterResponse, error) {
+	err := h.service.UserRegister(input.Email, input.Username)
 	if err != nil {
-		return &types.Status{Status: emailStatus}, status.Error(codes.Internal, err.Error())
+		return &pb.SendEmailUserRegisterResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.Status{Status: emailStatus}, nil
+	return &pb.SendEmailUserRegisterResponse{}, nil
 }

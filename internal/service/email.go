@@ -23,6 +23,13 @@ import (
 	"github.com/durudex/durudex-email-service/pkg/email"
 )
 
+// Email interface.
+type Email interface {
+	UserCode(to, username string, code uint64) error
+	UserRegister(to, username string) error
+	UserLoggedIn(to, ip string) error
+}
+
 // Email service structure.
 type EmailService struct {
 	email email.Email
@@ -35,7 +42,7 @@ func NewEmailService(email email.Email, cfg config.EmailConfig) *EmailService {
 }
 
 // Send to user email verification code.
-func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) {
+func (s *EmailService) UserCode(to, username string, code uint64) error {
 	// Create a new email message.
 	msg := email.SendEmailInput{To: to, Subject: "Verification Code"}
 
@@ -44,7 +51,7 @@ func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) 
 
 	// Generate email html template.
 	if err := msg.GenerateBodyFromHTML(s.cfg.Template.Verification, templateInput); err != nil {
-		return false, err
+		return err
 	}
 
 	// Send email message.
@@ -52,7 +59,7 @@ func (s *EmailService) UserCode(to, username string, code uint64) (bool, error) 
 }
 
 // Send to user email register information.
-func (s *EmailService) UserRegister(to, username string) (bool, error) {
+func (s *EmailService) UserRegister(to, username string) error {
 	// Create a new email message.
 	msg := email.SendEmailInput{To: to, Subject: "You have successfully created a new account"}
 
@@ -61,7 +68,7 @@ func (s *EmailService) UserRegister(to, username string) (bool, error) {
 
 	// Generate email html template.
 	if err := msg.GenerateBodyFromHTML(s.cfg.Template.Register, templateInput); err != nil {
-		return false, err
+		return err
 	}
 
 	// Send email message.
@@ -69,7 +76,7 @@ func (s *EmailService) UserRegister(to, username string) (bool, error) {
 }
 
 // Send to user email logged in information.
-func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
+func (s *EmailService) UserLoggedIn(to, ip string) error {
 	// Create a new email message.
 	msg := email.SendEmailInput{To: to, Subject: "You have successfully logged in"}
 
@@ -78,7 +85,7 @@ func (s *EmailService) UserLoggedIn(to, ip string) (bool, error) {
 
 	// Generate email html template.
 	if err := msg.GenerateBodyFromHTML(s.cfg.Template.LoggedIn, templateInput); err != nil {
-		return false, err
+		return err
 	}
 
 	// Send email message.

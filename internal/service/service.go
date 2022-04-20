@@ -22,13 +22,6 @@ import (
 	"github.com/durudex/durudex-email-service/pkg/email"
 )
 
-// Email interface.
-type Email interface {
-	UserCode(to, username string, code uint64) (bool, error)
-	UserRegister(to, username string) (bool, error)
-	UserLoggedIn(to, ip string) (bool, error)
-}
-
 // Service structure.
 type Service struct{ Email }
 

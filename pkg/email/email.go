@@ -25,7 +25,7 @@ import (
 
 // Email interface.
 type Email interface {
-	Send(input SendEmailInput) (bool, error)
+	Send(input SendEmailInput) error
 }
 
 // Email send message input.

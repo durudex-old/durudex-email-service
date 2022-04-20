@@ -71,10 +71,10 @@ func NewClient(cfg *SMTPConfig) (*Client, error) {
 }
 
 // Send client message.
-func (c *Client) Send(input SendEmailInput) (bool, error) {
+func (c *Client) Send(input SendEmailInput) error {
 	// Check email message input.
 	if err := input.Validate(); err != nil {
-		return false, err
+		return err
 	}
 
 	// Creating a new message.
@@ -92,13 +92,9 @@ func (c *Client) Send(input SendEmailInput) (bool, error) {
 
 	// Check for error in the message.
 	if msg.Error != nil {
-		return false, msg.Error
+		return msg.Error
 	}
 
 	// Send email message.
-	if err := msg.Send(c.client); err != nil {
-		return false, err
-	}
-
-	return true, nil
+	return msg.Send(c.client)
 }
