@@ -44,7 +44,6 @@ func NewGRPC(cfg *config.TLSConfig) (*gRPCServer, error) {
 			return nil, err
 		}
 
-		// Append server options.
 		// Append server credential options.
 		serverOptions = append(serverOptions, grpc.Creds(creds))
 	}
