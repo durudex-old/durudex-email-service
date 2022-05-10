@@ -20,10 +20,8 @@ Service for sending email messages.
 </p>
 
 ### 💡 Prerequisites
-+ [Go 1.17](https://golang.org/)
-+ [Docker](https://www.docker.com)
-+ [golangci-lint](https://golangci-lint.run/usage/install/)
-+ [grpc](https://grpc.io/docs/languages/go/quickstart/)
++ [Go 1.18](https://golang.org/)
++ [Docker](https://www.docker.com/get-started/)
 
 ## ⚙️ Build & Run
 1) Create an `.env` file in the root directory and add the following values from `.env.example`:
@@ -53,10 +51,3 @@ If you want to say thank you and/or support the active development of [Durudex](
 
 ## ⚠️ License
 Copyright © 2021-2022 [Durudex](https://github.com/durudex). Released under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) license.
-
-#### Third-party library licenses
-+ [grpc-go](https://github.com/grpc/grpc-go/blob/master/LICENSE)
-+ [protobuf](https://github.com/protocolbuffers/protobuf/blob/master/LICENSE)
-+ [zerolog](https://github.com/rs/zerolog/blob/master/LICENSE)
-+ [viper](https://github.com/spf13/viper/blob/master/LICENSE)
-+ [go-simple-mail](https://github.com/xhit/go-simple-mail/blob/master/LICENSE)
