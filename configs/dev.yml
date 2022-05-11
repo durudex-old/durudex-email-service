@@ -13,23 +13,23 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Durudex. If not, see <https://www.gnu.org/licenses/>
 
-server:
-  host: email.service.durudex.local
+grpc:
+  host: "email.service.durudex.local"
   port: 8002
   tls:
     enable: false
-    ca-cert: ./certs/rootCA.pem
-    cert: ./certs/email.service.durudex.local-cert.pem
-    key: ./certs/email.service.durudex.local-key.pem
+    ca-cert: "./certs/rootCA.pem"
+    cert: "./certs/email.service.durudex.local-cert.pem"
+    key: "./certs/email.service.durudex.local-key.pem"
 
 smtp:
-  connect-timeout: 10s
-  send-timeout: 10s
-  helo: durudex
+  connect-timeout: "10s"
+  send-timeout: "10s"
+  helo: "durudex"
   keep-alive: true
 
 email:
   template:
-    verification: ./web/template/verification.html
-    logged-in: ./web/template/logged_in.html
-    register: ./web/template/register.html
+    verification: "./web/template/verification.html"
+    logged-in: "./web/template/logged_in.html"
+    register: "./web/template/register.html"

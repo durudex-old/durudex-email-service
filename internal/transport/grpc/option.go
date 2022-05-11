@@ -15,7 +15,7 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package server
+package grpc
 
 import (
 	"context"
@@ -25,35 +25,46 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
-// gRPC server structure.
-type gRPCServer struct{ Server *grpc.Server }
+// Getting gRPC server options.
+func getOptions(cfg config.TLSConfig) []grpc.ServerOption {
+	log.Debug().Msg("Getting gRPC server options...")
 
-// Creating a new gRPC server.
-func NewGRPC(cfg *config.TLSConfig) (*gRPCServer, error) {
-	serverOptions := []grpc.ServerOption{}
+	var opts []grpc.ServerOption
 
 	// Added basic server options.
-	serverOptions = append(serverOptions, grpc.UnaryInterceptor(unaryInterceptor))
+	opts = append(opts,
+		// Unary interceptor.
+		grpc.UnaryInterceptor(unaryInterceptor),
+		// Stream interceptor.
+		grpc.StreamInterceptor(streamInterceptor),
+	)
 
 	if cfg.Enable {
-		// Loading TLS credentials.
-		creds, err := tls.LoadTLSCredentials(cfg.CACert, cfg.Cert, cfg.Key)
+		creds, err := tls.LoadTLSConfig(cfg.CACert, cfg.Cert, cfg.Key)
 		if err != nil {
-			return nil, err
+			log.Fatal().Err(err).Msg("failed to load TLS credentials")
 		}
 
 		// Append server credential options.
-		serverOptions = append(serverOptions, grpc.Creds(creds))
+		opts = append(opts, grpc.Creds(credentials.NewTLS(creds)))
 	}
 
-	return &gRPCServer{Server: grpc.NewServer(serverOptions...)}, nil
+	return opts
 }
 
-// Unary gRPC interceptor.
+// Unary gRPC server interceptor.
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	log.Info().Msgf("unary interceptor: %s", info.FullMethod)
+	log.Info().Str("method", info.FullMethod).Msg("Unary interceptor")
 
 	return handler(ctx, req)
+}
+
+// Stream gRPC server interceptor.
+func streamInterceptor(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	log.Info().Str("method", info.FullMethod).Msg("Stream interceptor")
+
+	return handler(srv, ss)
 }

@@ -17,10 +17,71 @@
 
 package main
 
-import "github.com/durudex/durudex-email-service/internal/app"
+import (
+	"os"
+	"os/signal"
+	"syscall"
 
-// The main function that is called when running the application.
+	"github.com/durudex/durudex-email-service/internal/config"
+	"github.com/durudex/durudex-email-service/internal/service"
+	"github.com/durudex/durudex-email-service/internal/transport/grpc"
+	"github.com/durudex/durudex-email-service/pkg/email"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+)
+
+// Initialize application.
+func init() {
+	// Set logger mode.
+	if os.Getenv("DEBUG") == "true" {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+}
+
+// A function that running the application.
 func main() {
-	// Running a this application.
-	app.Run()
+	// Initialize config.
+	cfg, err := config.Init()
+	if err != nil {
+		log.Error().Err(err).Msg("error initialize config")
+	}
+
+	// Create a new email client.
+	emailClient, err := email.NewClient(&email.SMTPConfig{
+		Host:           cfg.SMTP.Host,
+		Port:           cfg.SMTP.Port,
+		Username:       cfg.SMTP.Username,
+		Password:       cfg.SMTP.Password,
+		ConnectTimeout: cfg.SMTP.ConnectTimeout,
+		SendTimeout:    cfg.SMTP.SendTimeout,
+		Helo:           cfg.SMTP.Helo,
+		KeepAlive:      cfg.SMTP.KeepAlive,
+	})
+	if err != nil {
+		log.Fatal().Err(err).Msg("error creating email client")
+	}
+
+	// Creating a new service.
+	service := service.NewService(emailClient, cfg)
+	// Creating a new gRPC handler.
+	handler := grpc.NewHandler(service)
+
+	// Create a new server.
+	srv := grpc.NewServer(cfg.GRPC, handler)
+
+	// Run server.
+	go srv.Run()
+
+	// Quit in application.
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	// Stoping server.
+	srv.Stop()
+
+	log.Info().Msg("Durudex Email Service stoping!")
 }

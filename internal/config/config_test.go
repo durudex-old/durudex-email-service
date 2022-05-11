@@ -15,12 +15,15 @@
  * along with Durudex. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package config
+package config_test
 
 import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
+
+	"github.com/durudex/durudex-email-service/internal/config"
 )
 
 // Testing initialize config.
@@ -50,7 +53,7 @@ func TestConfig_Init(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *Config
+		want    *config.Config
 		wantErr bool
 	}{
 		{
@@ -64,32 +67,32 @@ func TestConfig_Init(t *testing.T) {
 					emailPassword: "1234567890",
 				},
 			},
-			want: &Config{
-				Server: ServerConfig{
-					Host: defaultServerHost,
-					Port: defaultServerPort,
-					TLS: TLSConfig{
-						Enable: defaultTLSEnable,
-						CACert: defaultTLSCACert,
-						Cert:   defaultTLSCert,
-						Key:    defaultTLSKey,
+			want: &config.Config{
+				GRPC: config.GRPCConfig{
+					Host: "email.service.durudex.local",
+					Port: "8002",
+					TLS: config.TLSConfig{
+						Enable: true,
+						CACert: "./certs/rootCA.pem",
+						Cert:   "./certs/email.service.durudex.local-cert.pem",
+						Key:    "./certs/email.service.durudex.local-key.pem",
 					},
 				},
-				SMTP: SMTPConfig{
-					ConnectTimeout: defaultSMTPConnectTimeout,
-					SendTimeout:    defaultSMTPSendTimeout,
-					Helo:           defaultSMTPHelo,
-					KeepAlive:      defaultSMTPKeepAlive,
+				SMTP: config.SMTPConfig{
+					ConnectTimeout: time.Second * 10,
+					SendTimeout:    time.Second * 10,
+					Helo:           "durudex",
+					KeepAlive:      true,
 					Host:           "mail.durudex.local",
 					Port:           25,
 					Username:       "user",
 					Password:       "1234567890",
 				},
-				Email: EmailConfig{
-					Template: EmailTemplate{
-						Verification: defaultEmailTemplateVerification,
-						LoggedIn:     defaultEmailTemplateLoggedIn,
-						Register:     defaultEmailTemplateRegister,
+				Email: config.EmailConfig{
+					Template: config.EmailTemplate{
+						Verification: "./web/template/verification.html",
+						LoggedIn:     "./web/template/logged_in.html",
+						Register:     "./web/template/register.html",
 					},
 				},
 			},
@@ -103,7 +106,7 @@ func TestConfig_Init(t *testing.T) {
 			setEnv(tt.args.env)
 
 			// Initialize config.
-			got, err := Init()
+			got, err := config.Init()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error initialize config: %s", err.Error())
 			}

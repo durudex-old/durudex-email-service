@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021-2022 Durudex
+ * Copyright © 2022 Durudex
 
  * This file is part of Durudex: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,23 +18,21 @@
 package grpc
 
 import (
-	"github.com/durudex/durudex-email-service/internal/delivery/grpc/pb"
 	"github.com/durudex/durudex-email-service/internal/service"
+	v1 "github.com/durudex/durudex-email-service/internal/transport/grpc/v1"
 
 	"google.golang.org/grpc"
 )
 
-// GRPC handler structure.
-type Handler struct {
-	service *service.Service
-}
+// gRPC server handler structure.
+type Handler struct{ service *service.Service }
 
 // Creating a new gRPC handler.
 func NewHandler(service *service.Service) *Handler {
 	return &Handler{service: service}
 }
 
-// Regisctration services handlers.
-func (h *Handler) RegisterHandlers(s *grpc.Server) {
-	pb.RegisterEmailServiceServer(s, NewEmailHandler(h.service))
+// Registering gRPC version handlers.
+func (h *Handler) RegisterHandlers(srv *grpc.Server) {
+	v1.NewHandler(h.service).RegisterHandlers(srv)
 }

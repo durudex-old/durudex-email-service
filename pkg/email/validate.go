@@ -24,7 +24,7 @@ const (
 	maxEmailLen = 255 // Maximum email length.
 )
 
-// Avaivable characters in email.
+// Available characters in email.
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 // Check email length and characters.

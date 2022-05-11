@@ -27,16 +27,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Default config path.
+const defaultConfigPath string = "configs/main"
+
 type (
 	// Config variables.
 	Config struct {
-		Server ServerConfig // Server config variables.
-		SMTP   SMTPConfig   // SMTP config variables.
-		Email  EmailConfig  // Email config variables.
+		GRPC  GRPCConfig
+		SMTP  SMTPConfig
+		Email EmailConfig
 	}
 
-	// Server config variables.
-	ServerConfig struct {
+	// gRPC config variables.
+	GRPCConfig struct {
 		Host string    `mapstructure:"host"`
 		Port string    `mapstructure:"port"`
 		TLS  TLSConfig `mapstructure:"tls"`
@@ -78,9 +81,6 @@ type (
 // Initialize config.
 func Init() (*Config, error) {
 	log.Debug().Msg("Initialize config...")
-
-	// Populate defaults config variables.
-	populateDefaults()
 
 	// Parsing specified when starting the config file.
 	if err := parseConfigFile(); err != nil {
@@ -136,8 +136,8 @@ func unmarshal(cfg *Config) error {
 	if err := viper.UnmarshalKey("email", &cfg.Email); err != nil {
 		return err
 	}
-	// Unmarshal server keys.
-	return viper.UnmarshalKey("server", &cfg.Server)
+	// Unmarshal gRPC server keys.
+	return viper.UnmarshalKey("grpc", &cfg.GRPC)
 }
 
 // Set configurations from environment.
@@ -159,31 +159,4 @@ func setFromEnv(cfg *Config) error {
 	cfg.SMTP.Password = os.Getenv("EMAIL_PASSWORD")
 
 	return nil
-}
-
-// Populate defaults config variables.
-func populateDefaults() {
-	log.Debug().Msg("Populate defaults config variables...")
-
-	// Server defaults.
-	viper.SetDefault("server.host", defaultServerHost)
-	viper.SetDefault("server.port", defaultServerPort)
-
-	// TLS defaults.
-	viper.SetDefault("server.tls.enable", defaultTLSEnable)
-	viper.SetDefault("server.tls.ca-cert", defaultTLSCACert)
-	viper.SetDefault("server.tls.cert", defaultTLSCert)
-	viper.SetDefault("server.tls.key", defaultTLSKey)
-
-	// SMTP defaults.
-	viper.SetDefault("smtp.connect-timeout", defaultSMTPConnectTimeout)
-	viper.SetDefault("smtp.send-timeout", defaultSMTPSendTimeout)
-	viper.SetDefault("smtp.helo", defaultSMTPHelo)
-	viper.SetDefault("smtp.keep-alive", defaultSMTPKeepAlive)
-
-	// Email templates defaults.
-	viper.SetDefault("email.template.verification", defaultEmailTemplateVerification)
-	viper.SetDefault("email.template.logged-in", defaultEmailTemplateLoggedIn)
-	viper.SetDefault("email.template.register", defaultEmailTemplateRegister)
-
 }
