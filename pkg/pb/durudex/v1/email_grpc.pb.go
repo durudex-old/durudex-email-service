@@ -18,8 +18,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
+	// Sending an email to a user with a verification code.
 	SendEmailUserCode(ctx context.Context, in *SendEmailUserCodeRequest, opts ...grpc.CallOption) (*SendEmailUserCodeResponse, error)
+	// Sending an email to a user with logged in.
 	SendEmailUserLoggedIn(ctx context.Context, in *SendEmailUserLoggedInRequest, opts ...grpc.CallOption) (*SendEmailUserLoggedInResponse, error)
+	// Sending an email to a user with register.
 	SendEmailUserRegister(ctx context.Context, in *SendEmailUserRegisterRequest, opts ...grpc.CallOption) (*SendEmailUserRegisterResponse, error)
 }
 
@@ -62,8 +65,11 @@ func (c *emailServiceClient) SendEmailUserRegister(ctx context.Context, in *Send
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility
 type EmailServiceServer interface {
+	// Sending an email to a user with a verification code.
 	SendEmailUserCode(context.Context, *SendEmailUserCodeRequest) (*SendEmailUserCodeResponse, error)
+	// Sending an email to a user with logged in.
 	SendEmailUserLoggedIn(context.Context, *SendEmailUserLoggedInRequest) (*SendEmailUserLoggedInResponse, error)
+	// Sending an email to a user with register.
 	SendEmailUserRegister(context.Context, *SendEmailUserRegisterRequest) (*SendEmailUserRegisterResponse, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
@@ -169,5 +175,5 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "email.proto",
+	Metadata: "durudex/v1/email.proto",
 }

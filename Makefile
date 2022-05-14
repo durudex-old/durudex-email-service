@@ -31,7 +31,7 @@ test: lint
 
 .PHONY: buf
 buf:
-	buf generate proto/src/durudex/v1 --path proto/src/durudex/v1/email.proto
+	buf generate proto/src/api/ --path proto/src/api/durudex/v1/email.proto
 
 .PHONY: buf-lint
 buf-lint:

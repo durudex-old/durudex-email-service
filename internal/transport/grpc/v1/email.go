@@ -21,7 +21,7 @@ import (
 	"context"
 
 	"github.com/durudex/durudex-email-service/internal/service"
-	v1 "github.com/durudex/durudex-email-service/pkg/pb/v1"
+	v1 "github.com/durudex/durudex-email-service/pkg/pb/durudex/v1"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
